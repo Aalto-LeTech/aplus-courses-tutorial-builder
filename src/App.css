@@ -1,38 +1,94 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+div {
+  font-size: 12px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 1fr 250px;
+  background-color: #DDD;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.file-input {
+  position: absolute;
+  display: none;
+}
+
+h2 {
+  all: unset;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+button,
+.round-button {
+  all: unset;
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  border-radius: 15px;
+  padding: 5px 15px;
+  margin: 5px;
+  background-color: #dddddd;
+  display: inline-block;
+  font-size: 12px;
+}
+
+button:hover,
+.round-button:hover,
+.sidebar-item:hover {
+  background-color: #ccc !important;
+}
+
+.rounded-item,
+.bottom-item {
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px 1px #0004;
+  background-color: #FFF;
+}
+
+.task {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.task-index {
+  background-color: #EEE;
+  margin: -10px 10px -10px -10px;
+  padding: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type=text] {
+  all: unset;
+  min-width: 20px;
+  border-radius: 15px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #CCC;
+}
+
+textarea {
+  border-radius: 15px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #CCC;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }

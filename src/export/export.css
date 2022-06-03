@@ -1,0 +1,24 @@
+#export-container {
+    position: absolute;
+    z-index: 1;
+    background-color: #0009;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#export-window {
+    background-color: #FFF;
+    width: 90%;
+    height: 90%;
+    padding: 25px;
+    overflow-x: auto;
+}
+
+#export-code {
+    border-radius: 15px;
+}

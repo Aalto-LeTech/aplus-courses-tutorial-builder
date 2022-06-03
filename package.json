@@ -1,6 +1,7 @@
 {
   "name": "aplus-courses-tutorial-builder",
   "version": "0.1.0",
+  "homepage": "https://aalto-letech.github.io/aplus-courses-tutorial-builder/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -10,6 +11,8 @@
     "@types/node": "^16.11.38",
     "@types/react": "^18.0.10",
     "@types/react-dom": "^18.0.5",
+    "granular-hooks": "^1.1.0",
+    "highlight.js": "^11.5.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
@@ -17,6 +20,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "npm run cleanup && gh-pages -d build",
+    "cleanup": "rm -rf node_modules/.cache/gh-pages",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }

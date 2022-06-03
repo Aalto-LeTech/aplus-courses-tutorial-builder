@@ -1,0 +1,39 @@
+#sidebar {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+    user-select: none;
+}
+
+#sidebar-top {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#sidebar-top>div {
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
+#new-task,
+#tutorial-settings-button {
+    background-color: #FAFAFA;
+}
+
+.sidebar-item {
+    padding: 10px;
+    cursor: pointer;
+    margin: 10px;
+}

@@ -1,0 +1,191 @@
+#intellij {
+    display: grid;
+    background-color: #3c3f41;
+    color: #afb1b3;
+    min-height: 400px;
+    user-select: none;
+    font-size: 14px;
+    margin: 5px;
+
+    grid-template-rows: 30px 24px 3fr 1fr 24px 24px;
+    grid-template-columns: 24px 1fr 4fr 1fr 24px;
+}
+
+#intellij>div {
+    background-color: #3c3f41;
+}
+
+.intellij-whole-width {
+    grid-column-start: 1;
+    grid-column-end: 6;
+    align-self: center;
+    padding: 4px 0px;
+}
+
+#intellij-menu {
+    height: 100%;
+    border-bottom: 1px solid #515151;
+}
+
+#intellij-menu>span {
+    padding: 0px 6px;
+    cursor: pointer;
+}
+
+#intellij-toolbar {
+    height: 100%;
+    padding-left: 10px;
+    border-bottom: 1px solid #323232;
+}
+
+#intellij-toolbar-bottom {
+    border-top: 1px solid #323232;
+    grid-row-start: 5;
+    grid-row-end: 5;
+    padding-left: 25px;
+}
+
+#intellij-toolbar-bottom>span {
+    padding: 6px;
+    cursor: pointer;
+}
+
+#intellij-left-edge {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 3;
+    grid-row-end: 5;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #303030;
+}
+
+#intellij-left-edge>span {
+    writing-mode: sideways-lr;
+    padding: 14px 3px;
+    cursor: pointer;
+}
+
+#intellij-right-edge {
+    grid-column-start: 5;
+    grid-column-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 5;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #303030;
+}
+
+#intellij-right-edge>span {
+    writing-mode: sideways-rl;
+    padding: 14px 3px;
+    cursor: pointer;
+}
+
+#intellij-bottom-edge {
+    grid-row-start: 6;
+    grid-row-end: 6;
+    border-top: 1px solid #303030;
+    padding-left: 10px;
+}
+
+.intellij-selected {
+    background-color: #262829;
+}
+
+#intellij-toolwindow-left {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    border-right: 1px solid #323232;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#intellij-toolwindow-right {
+    grid-column-start: 4;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    border-left: 1px solid #323232;
+    padding: 20px;
+}
+
+#intellij-toolwindow-bottom {
+    grid-column-start: 2;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    grid-row-end: 4;
+    border-top: 1px solid #323232;
+    padding: 20px;
+}
+
+#intellij-project-toolbar {
+    background-color: #3b4754;
+    padding: 4px;
+    border-bottom: 1px solid #323232;
+}
+
+#intellij-editor {
+    background-color: #2b2b2b !important;
+    overflow: auto;
+}
+
+#intellij-editor>pre {
+    margin: 0;
+    display: flex;
+    min-height: 100%;
+}
+
+#intellij-code-editor {
+    user-select: text;
+}
+
+#intellij-linenumbers {
+    padding: 1em 1.5em 1em 0.5em;
+    background-color: #313335;
+    border-right: 1px solid #545454;
+    color: #545454;
+}
+
+.intellij-file,
+.intellij-dir {
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.intellij-file {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+summary {
+    padding: 4px 0px;
+}
+
+#module-picker-label {
+    background-color: #FF0090;
+    color: #FFF;
+    align-self: center;
+}
+
+#module-picker-label:hover {
+    background-color: #d30078;
+}
+
+.intellij-dark {
+    filter: brightness(30%)
+}
+
+#intellij-popup {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 200px;
+    border: 1px solid #111;
+}
