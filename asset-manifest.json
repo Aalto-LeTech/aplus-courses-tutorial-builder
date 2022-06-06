@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/aplus-courses-tutorial-builder/static/css/main.f4e538e5.css",
-    "main.js": "/aplus-courses-tutorial-builder/static/js/main.51e3b423.js",
+    "main.css": "/aplus-courses-tutorial-builder/static/css/main.09aa82cf.css",
+    "main.js": "/aplus-courses-tutorial-builder/static/js/main.74fce3e2.js",
     "index.html": "/aplus-courses-tutorial-builder/index.html",
-    "main.f4e538e5.css.map": "/aplus-courses-tutorial-builder/static/css/main.f4e538e5.css.map",
-    "main.51e3b423.js.map": "/aplus-courses-tutorial-builder/static/js/main.51e3b423.js.map"
+    "main.09aa82cf.css.map": "/aplus-courses-tutorial-builder/static/css/main.09aa82cf.css.map",
+    "main.74fce3e2.js.map": "/aplus-courses-tutorial-builder/static/js/main.74fce3e2.js.map"
   },
   "entrypoints": [
-    "static/css/main.f4e538e5.css",
-    "static/js/main.51e3b423.js"
+    "static/css/main.09aa82cf.css",
+    "static/js/main.74fce3e2.js"
   ]
 }
