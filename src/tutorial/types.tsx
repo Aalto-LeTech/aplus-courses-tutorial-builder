@@ -1,4 +1,4 @@
-import { ActionArgumentFields, FieldInfo } from './actionArguments';
+import { ActionArgumentFields, ArgumentInfo } from './actionArguments';
 
 export enum Component {
     projectTree = 'projectTree',
@@ -7,10 +7,23 @@ export enum Component {
     repl = 'repl',
 }
 
+export const getComponent = (name: string) => {
+    switch (name) {
+        case 'editor':
+            return Component.editor;
+        case 'build':
+            return Component.build;
+        case 'repl':
+            return Component.repl;
+        default:
+            return Component.projectTree;
+    }
+};
+
 export class Action {
     readonly command: string;
     readonly description: string;
-    readonly fields: Map<string, FieldInfo>;
+    readonly fields: Map<string, ArgumentInfo>;
 
     constructor(
         command: string,

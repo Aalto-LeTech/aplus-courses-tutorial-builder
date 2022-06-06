@@ -1,11 +1,18 @@
 import React from 'react';
-import { Actions, Component, Task, Tutorial } from '../tutorial/types';
-import { useTextInput } from './items/itemUtils';
+import {
+    Actions,
+    Component,
+    getComponent,
+    Task,
+    Tutorial,
+} from '../tutorial/types';
+import { useBooleanInput, useTextInput } from './items/itemUtils';
 import { SelectorListItem } from './items/listItem';
 import TextAreaItem from './items/textAreaItem';
 import { useGranularEffect } from 'granular-hooks';
 import SelectorItem from './items/selectorItem';
 import ActionArgumentItem from './items/actionArgumentItem';
+import BooleanItem from './items/booleanItem';
 
 type TaskSettingsProps = {
     selectedTask: Task | null;
@@ -20,24 +27,13 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
 }) => {
     const instructionInput = useTextInput('', 'Instructions for the task');
     const infoInput = useTextInput('', 'Extra info for the task');
-    const componentInput = useTextInput('', 'Component');
+    const componentInput = useTextInput('projectTree', 'Component');
     const actionInput = useTextInput('', 'Action');
 
     const index =
         selectedTutorial !== null && selectedTask !== null
             ? selectedTutorial.tasks.indexOf(selectedTask) + 1
             : -1;
-
-    useGranularEffect(
-        () => {
-            if (selectedTask === null) return;
-            instructionInput.setValue(selectedTask.instruction);
-            infoInput.setValue(selectedTask.info);
-            actionInput.setValue(selectedTask.action.command);
-        },
-        [selectedTask],
-        [instructionInput, infoInput, actionInput]
-    );
 
     const handleUpdateAction = React.useCallback(() => {
         if (selectedTask === null || actionInput.value === '') return;
@@ -57,7 +53,89 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
         if (selectedTask === null || infoInput.value === '') return;
         selectedTask.info = infoInput.value;
         updateSelectedTask(selectedTask);
-    }, [selectedTask, instructionInput, updateSelectedTask, infoInput]);
+    }, [selectedTask, updateSelectedTask, infoInput]);
+
+    const handleAddComponent = React.useCallback(
+        (value: string) => {
+            if (selectedTask === null || value.trim() === '') return;
+            selectedTask.component = Array.from(
+                new Set([...selectedTask.component, getComponent(value)])
+            );
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask]
+    );
+
+    const handleRemoveComponent = React.useCallback(
+        (index: number) => {
+            if (selectedTask === null || componentInput.value === '') return;
+            selectedTask.component.splice(index, 1);
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask, componentInput]
+    );
+
+    const handleAddListArgument = React.useCallback(
+        (argumentName: string, value: string) => {
+            if (selectedTask === null || value.trim() === '') return;
+            selectedTask.actionArguments[argumentName] = [
+                ...(selectedTask.actionArguments[argumentName] ?? []),
+                value,
+            ];
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask]
+    );
+
+    const handleRemoveListArgument = React.useCallback(
+        (argumentName: string, index: number) => {
+            if (selectedTask === null || componentInput.value === '') return;
+            selectedTask.actionArguments[argumentName].splice(index, 1);
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask, componentInput]
+    );
+
+    const handleSaveTextArgument = React.useCallback(
+        (argumentName: string, value: string) => {
+            if (selectedTask === null) return;
+            selectedTask.actionArguments[argumentName] = value;
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask]
+    );
+
+    const handleChangeBooleanArgument = React.useCallback(
+        (argumentName: string, isFreeRange: boolean) => {
+            if (selectedTask === null) return;
+            selectedTask.actionArguments[argumentName] = isFreeRange;
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask]
+    );
+
+    const handleFreeRangeChange = React.useCallback(
+        (isFreeRange: boolean) => {
+            if (selectedTask === null) return;
+            selectedTask.freeRange = isFreeRange;
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask]
+    );
+
+    const freeRangeInput = useBooleanInput(false, handleFreeRangeChange);
+
+    useGranularEffect(
+        () => {
+            if (selectedTask === null) return;
+            instructionInput.setValue(selectedTask.instruction);
+            infoInput.setValue(selectedTask.info);
+            actionInput.setValue(selectedTask.action.command);
+            freeRangeInput.setValue(selectedTask.freeRange);
+        },
+        [selectedTask],
+        [instructionInput, infoInput, actionInput, freeRangeInput]
+    );
 
     if (!selectedTask) return <></>;
 
@@ -80,8 +158,8 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                 title="Highlighted components"
                 info=""
                 inputProps={componentInput}
-                onAddClick={() => {}}
-                onRemoveClick={() => {}}
+                onAddClick={handleAddComponent}
+                onRemoveClick={handleRemoveComponent}
                 listItems={selectedTask?.component.map((component) =>
                     component.toString()
                 )}
@@ -93,6 +171,12 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                         ])
                     )
                 }
+            />
+            <BooleanItem
+                key={`${index}-freerange`}
+                title="Free range"
+                info="By setting this to true, this Task will not have listeners registered and instead, there will be a button available that the students will click to signal that they are done with the described Task."
+                inputProps={freeRangeInput}
             />
             <SelectorItem
                 title="Action"
@@ -110,10 +194,16 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
             {Array.from(selectedTask.action.fields.entries()).map(
                 ([fieldName, fieldInfo]) => (
                     <ActionArgumentItem
-                        key={fieldName}
+                        key={`${index}-${fieldName}`}
                         selectedTask={selectedTask}
-                        fieldName={fieldName}
-                        fieldInfo={fieldInfo}
+                        argumentName={fieldName}
+                        argumentInfo={fieldInfo}
+                        handleAddListArgument={handleAddListArgument}
+                        handleRemoveListArgument={handleRemoveListArgument}
+                        handleSaveTextArgument={handleSaveTextArgument}
+                        handleChangeBooleanArgument={
+                            handleChangeBooleanArgument
+                        }
                     />
                 )
             )}

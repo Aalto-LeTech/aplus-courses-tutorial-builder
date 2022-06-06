@@ -1,70 +1,94 @@
 import React from 'react';
-import { FieldInfo, FieldType } from '../../tutorial/actionArguments';
+import { ArgumentInfo, ArgumentType } from '../../tutorial/actionArguments';
 import { Task } from '../../tutorial/types';
-import { useTextInput } from './itemUtils';
+import BooleanItem from './booleanItem';
+import { useBooleanInput, useTextInput } from './itemUtils';
 import { TextInputListItem } from './listItem';
 import SingleLineItem from './singleLineItem';
 
 type ActionArgumentItemProps = {
     selectedTask: Task | null;
-    fieldName: string;
-    fieldInfo: FieldInfo;
+    argumentName: string;
+    argumentInfo: ArgumentInfo;
+    handleAddListArgument: (argumentName: string, value: string) => void;
+    handleRemoveListArgument: (argumentName: string, index: number) => void;
+    handleSaveTextArgument: (argumentName: string, value: string) => void;
+    handleChangeBooleanArgument: (
+        argumentName: string,
+        isFreeRange: boolean
+    ) => void;
 };
 
 const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
     selectedTask,
-    fieldName,
-    fieldInfo,
+    argumentName,
+    argumentInfo,
+    handleAddListArgument,
+    handleRemoveListArgument,
+    handleSaveTextArgument,
+    handleChangeBooleanArgument,
 }) => {
-    let args = selectedTask?.actionArguments[fieldName];
+    let args = selectedTask?.actionArguments[argumentName];
     if (args === undefined) {
-        switch (fieldInfo.type) {
-            case FieldType.String:
+        switch (argumentInfo.type) {
+            case ArgumentType.String:
                 args = '';
                 break;
-            case FieldType.StringArray:
+            case ArgumentType.StringArray:
                 args = [];
                 break;
-            case FieldType.Boolean:
+            case ArgumentType.Boolean:
                 args = true;
                 break;
         }
     }
-    const inputProps = useTextInput(
-        fieldInfo.type === FieldType.StringArray ? '' : args,
-        fieldInfo.type === FieldType.StringArray ? 'New argument' : 'Argument'
+    const textInputProps = useTextInput(
+        argumentInfo.type === ArgumentType.StringArray ? '' : args,
+        argumentInfo.type === ArgumentType.StringArray
+            ? 'New argument'
+            : 'Argument'
     );
+    const booleanInputProps = useBooleanInput(false, (checked) => {
+        handleChangeBooleanArgument(argumentName, checked);
+    });
     if (!selectedTask) return <></>;
-    switch (fieldInfo.type) {
-        case FieldType.String:
+    switch (argumentInfo.type) {
+        case ArgumentType.String:
             return (
                 <SingleLineItem
-                    title={fieldName}
-                    info={fieldInfo.info}
-                    inputProps={inputProps}
-                    onSubmit={() => {}}
+                    title={argumentName}
+                    info={argumentInfo.info}
+                    inputProps={textInputProps}
+                    onSubmit={(value) =>
+                        handleSaveTextArgument(argumentName, value)
+                    }
                 />
             );
 
-        case FieldType.StringArray:
+        case ArgumentType.StringArray:
             return (
                 <TextInputListItem
-                    title={fieldName}
-                    info={fieldInfo.info}
+                    title={argumentName}
+                    info={argumentInfo.info}
                     listItems={args}
-                    inputProps={inputProps}
-                    onAddClick={() => {}}
-                    onRemoveClick={() => {}}
+                    inputProps={textInputProps}
+                    onAddClick={(value) =>
+                        handleAddListArgument(argumentName, value)
+                    }
+                    onRemoveClick={(index) =>
+                        handleRemoveListArgument(argumentName, index)
+                    }
                 />
             );
-        case FieldType.Boolean:
-            break;
+        case ArgumentType.Boolean:
+            return (
+                <BooleanItem
+                    title={argumentName}
+                    info={argumentInfo.info}
+                    inputProps={booleanInputProps}
+                />
+            );
     }
-    return (
-        <div>
-            {fieldName} {selectedTask.actionArguments[fieldName]}
-        </div>
-    );
 };
 
 export default ActionArgumentItem;

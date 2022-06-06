@@ -18,12 +18,16 @@ const TextAreaItem: React.FC<TextAreaItemProps> = ({
             onSubmit={(e) => {
                 e.preventDefault();
                 onSubmit();
+                inputProps.setUnsavedChanges(false);
             }}
         >
             <label>
                 <h2>{title}</h2>
             </label>
             <TextAreaInput {...inputProps} />
+            {inputProps.unsavedChanges && (
+                <p style={{ margin: 0 }}>Unsaved changes</p>
+            )}
             <button type="submit">Save</button>
         </form>
     );

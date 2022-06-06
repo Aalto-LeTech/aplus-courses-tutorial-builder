@@ -28,6 +28,12 @@ function App() {
         setHighlightedComponents(selectedTask.component);
     }, [selectedTask, setHighlightedComponents]);
 
+    React.useEffect(() => {
+        if (selectedControl === Control.TutorialSettings) {
+            setSelectedTask(null);
+        }
+    }, [selectedControl, setSelectedTask]);
+
     const updateSelectedTutorial = React.useCallback(
         (updatedTutorial: Tutorial) => {
             if (!selectedTutorial) return;
@@ -67,6 +73,7 @@ function App() {
                 setTutorials={setTutorials}
                 selectedTutorial={selectedTutorial}
                 setSelectedTutorial={setSelectedTutorial}
+                updateSelectedTutorial={updateSelectedTutorial}
                 setSelectedTask={setSelectedTask}
                 setSelectedControl={setSelectedControl}
             />

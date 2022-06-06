@@ -48,3 +48,75 @@
 .list-item > span {
     margin: 5px;
 }
+
+/* Toggler from https://codepen.io/alvarotrigo/pen/wvyvjva */
+
+.toggler-wrapper {
+    display: block;
+    width: 45px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggler-wrapper input[type='checkbox'] {
+    display: none;
+}
+
+.toggler-wrapper input[type='checkbox']:checked + .toggler-slider {
+    background-color: #44cc66;
+}
+
+.toggler-wrapper .toggler-slider {
+    background-color: #ccc;
+    position: absolute;
+    border-radius: 100px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
+
+.toggler-wrapper .toggler-knob {
+    position: absolute;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
+
+input[type='checkbox']:checked + .toggler-slider .toggler-knob {
+    left: calc(100% - 19px - 3px);
+}
+
+input[type='checkbox']:checked + .toggler-slider .toggler-knob:after {
+    content: 'true';
+}
+
+.toggler-wrapper.center {
+    align-self: center;
+}
+
+.toggler-wrapper .toggler-knob {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+    box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+}
+
+.toggler-wrapper .toggler-knob:after {
+    content: 'false';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 65%;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.7;
+}

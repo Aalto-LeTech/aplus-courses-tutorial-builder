@@ -1,7 +1,7 @@
 import React from 'react';
 import { Control } from '../bottomControls/bottomControls';
 import { getTutorialsFromJson } from '../tutorial/importExport';
-import { Task, Tutorial } from '../tutorial/types';
+import { Actions, Task, Tutorial } from '../tutorial/types';
 import './sidebar.css';
 import TaskButton from './taskButton';
 
@@ -11,6 +11,7 @@ type SidebarProps = {
     setTutorials: React.Dispatch<React.SetStateAction<Tutorial[]>>;
     selectedTutorial: Tutorial | null;
     setSelectedTutorial: (tutorial: Tutorial | null) => void;
+    updateSelectedTutorial: (updatedTutorial: Tutorial) => void;
     setSelectedTask: (task: Task | null) => void;
     setSelectedControl: (control: Control) => void;
 };
@@ -21,13 +22,42 @@ const Sidebar: React.FC<SidebarProps> = ({
     setTutorials,
     selectedTutorial,
     setSelectedTutorial,
+    updateSelectedTutorial,
     setSelectedTask,
     setSelectedControl,
 }) => {
     const [prevTutorialsLength, setPrevTutorialsLength] = React.useState(
         tutorials.length
     );
-    const newTutorial = () => {};
+
+    const newTutorial = React.useCallback(() => {
+        setTutorials((oldTutorials) => [
+            ...oldTutorials,
+            {
+                name: `Tutorial ${oldTutorials.length + 1}`,
+                moduleDependencies: [],
+                tasks: [],
+            },
+        ]);
+    }, [setTutorials]);
+
+    const newTask = React.useCallback(() => {
+        const action = Actions.get('openEditor');
+        if (!selectedTutorial || !action) return;
+        const newTask: Task = {
+            action: action,
+            actionArguments: {},
+            assertClosed: [],
+            component: [],
+            freeRange: false,
+            info: '',
+            instruction: 'New task',
+        };
+        selectedTutorial.tasks.push(newTask);
+        updateSelectedTutorial(selectedTutorial);
+        setSelectedTask(newTask);
+    }, [selectedTutorial, updateSelectedTutorial, setSelectedTask]);
+
     const handleTutorialImportChange: React.ChangeEventHandler<
         HTMLInputElement
     > = (e) => {
@@ -62,7 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     React.useEffect(() => {
         if (tutorials.length > 0 && prevTutorialsLength !== tutorials.length) {
-            setSelectedTutorial(tutorials[0]);
+            setSelectedTutorial(tutorials[tutorials.length - 1]);
             setSelectedControl(Control.TutorialSettings);
             setPrevTutorialsLength(tutorials.length);
         }
@@ -124,7 +154,11 @@ const Sidebar: React.FC<SidebarProps> = ({
                             />
                         ))}
                     </div>
-                    <div className="sidebar-item rounded-item" id="new-task">
+                    <div
+                        className="sidebar-item rounded-item"
+                        id="new-task"
+                        onClick={newTask}
+                    >
                         + New task
                     </div>
                 </>

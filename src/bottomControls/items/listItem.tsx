@@ -96,7 +96,6 @@ export const SelectorListItem: React.FC<SelectorListItemProps> = ({
             <button
                 onClick={() => {
                     onAddClick(inputProps.value);
-                    inputProps.setValue('');
                 }}
             >
                 Add

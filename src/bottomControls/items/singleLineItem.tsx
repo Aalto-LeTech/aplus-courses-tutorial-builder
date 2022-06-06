@@ -5,7 +5,7 @@ type SingleLineItemProps = {
     title: string;
     info: string;
     inputProps: TextInputProps<HTMLInputElement>;
-    onSubmit: () => void;
+    onSubmit: (value: string) => void;
 };
 
 const SingleLineItem: React.FC<SingleLineItemProps> = ({
@@ -19,7 +19,8 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
             className="bottom-item"
             onSubmit={(e) => {
                 e.preventDefault();
-                onSubmit();
+                onSubmit(inputProps.value);
+                inputProps.setUnsavedChanges(false);
             }}
         >
             <label>
@@ -27,6 +28,9 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
             </label>
             <div>{info}</div>
             <TextInput {...inputProps} />
+            {inputProps.unsavedChanges && (
+                <p style={{ marginTop: 0, marginBottom: 0 }}>Unsaved changes</p>
+            )}
             <button type="submit">Save</button>
         </form>
     );
