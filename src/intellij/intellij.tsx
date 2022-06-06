@@ -2,17 +2,19 @@ import React from 'react';
 import './intellij.css';
 import ProjectTree from './projectTree';
 import Editor from './editor';
-import { Component, Task } from '../tutorial/types';
+import { Task, Tutorial } from '../tutorial/types';
 
 type IntelliJProps = {
     selectedTask: Task | null;
+    selectedTutorial: Tutorial | null;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
-    highlightedComponents: Component[];
+    highlightedComponents: string[];
 };
 
 const IntelliJ: React.FC<IntelliJProps> = ({
     selectedTask,
+    selectedTutorial,
     selectedFilePath,
     setSelectedFilePath,
     highlightedComponents,
@@ -39,6 +41,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         const replEl = repl.current;
         if (
             !selectedTask ||
+            !selectedTutorial ||
             !popupEl ||
             !intellijEl ||
             !projectTreeEl ||
@@ -49,16 +52,16 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         let highlightedEl: HTMLDivElement | undefined = undefined;
         let onTop = false;
         switch (selectedTask.component[0]) {
-            case Component.build:
+            case 'build':
                 // TODO what is this
                 break;
-            case Component.editor:
+            case 'editor':
                 highlightedEl = editorEl;
                 break;
-            case Component.projectTree:
+            case 'projectTree':
                 highlightedEl = projectTreeEl;
                 break;
-            case Component.repl:
+            case 'repl':
                 highlightedEl = replEl;
                 onTop = true;
                 break;
@@ -80,7 +83,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             : `translate(${left + width - intellijLeft + 10}px, ${
                   top - intellijTop
               }px)`;
-    }, [selectedTask, isOverlay]);
+    }, [selectedTutorial, selectedTask, isOverlay]);
 
     return (
         <div ref={intellij} className="rounded-item" id="intellij">
@@ -123,7 +126,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 id="intellij-toolwindow-left"
                 className={
                     highlightedComponents.length > 0 &&
-                    !highlightedComponents.includes(Component.projectTree)
+                    !highlightedComponents.includes('projectTree')
                         ? 'intellij-dark'
                         : ''
                 }
@@ -135,7 +138,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 id="intellij-editor"
                 className={
                     highlightedComponents.length > 0 &&
-                    !highlightedComponents.includes(Component.editor)
+                    !highlightedComponents.includes('editor')
                         ? 'intellij-dark'
                         : ''
                 }
@@ -158,7 +161,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             <div
                 ref={repl}
                 className={
-                    isOverlay && !highlightedComponents.includes(Component.repl)
+                    isOverlay && !highlightedComponents.includes('repl')
                         ? 'intellij-dark'
                         : ''
                 }

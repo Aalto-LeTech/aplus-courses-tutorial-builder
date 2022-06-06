@@ -3,7 +3,7 @@ import './export.css';
 import hljs from 'highlight.js';
 import '../../node_modules/highlight.js/styles/base16/darcula.css';
 import { Tutorial } from '../tutorial/types';
-import { tutorialsToJson } from '../tutorial/importExport';
+import { saveJson, tutorialsToJson } from '../tutorial/importExport';
 
 type ExportProps = {
     tutorials: Tutorial[];
@@ -13,6 +13,8 @@ type ExportProps = {
 
 const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
     const [exportCode, setExportCode] = React.useState('');
+    const [copyButtonText, setCopyButtonText] =
+        React.useState('Copy to clipboard');
 
     React.useEffect(() => {
         if (visible) {
@@ -20,6 +22,12 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
             hljs.highlightAll();
         }
     }, [exportCode, visible, tutorials]);
+
+    const handleCopyToClipboard = React.useCallback(() => {
+        navigator.clipboard.writeText(exportCode);
+        setCopyButtonText('Copied');
+        setTimeout(() => setCopyButtonText('Copy to clipboard'), 2000);
+    }, [exportCode]);
 
     return (
         <div
@@ -32,6 +40,13 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
                 id="export-window"
                 onClick={(event) => event.stopPropagation()}
             >
+                <div>
+                    <button onClick={() => saveJson(exportCode)}>Save</button>
+                    <button onClick={handleCopyToClipboard}>
+                        {copyButtonText}
+                    </button>
+                    <button onClick={() => setVisible(false)}>Close</button>
+                </div>
                 <pre>
                     <code className="language-json" id="export-code">
                         {exportCode}

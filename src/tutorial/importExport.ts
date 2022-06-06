@@ -56,3 +56,14 @@ export const tutorialsToJson = (tutorials: Tutorial[]): string => {
     }
     return JSON.stringify({ tutorials: Object.fromEntries(exported) }, null, 4);
 };
+
+export const saveJson = (jsonString: string) => {
+    var el = document.createElement('a');
+    el.setAttribute(
+        'href',
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonString)
+    );
+    el.setAttribute('download', 'tutorial.json');
+
+    el.click();
+};

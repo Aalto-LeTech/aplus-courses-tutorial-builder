@@ -43,11 +43,15 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
         }
     }
     const textInputProps = useTextInput(
-        argumentInfo.type === ArgumentType.StringArray ? '' : args,
         argumentInfo.type === ArgumentType.StringArray
             ? 'New argument'
             : 'Argument'
     );
+    React.useEffect(() => {
+        if (argumentInfo.type === ArgumentType.String)
+            textInputProps.setValue(args);
+    });
+
     const booleanInputProps = useBooleanInput(false, (checked) => {
         handleChangeBooleanArgument(argumentName, checked);
     });

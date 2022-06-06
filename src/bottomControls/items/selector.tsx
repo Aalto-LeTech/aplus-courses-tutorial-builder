@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { TextInputProps } from './itemUtils';
 
 type SelectorProps = {
@@ -7,6 +8,9 @@ type SelectorProps = {
 };
 
 const Selector: React.FC<SelectorProps> = ({ inputProps, items }) => {
+    useEffect(() => {
+        inputProps.setValue([...items.keys()][0]);
+    }, []);
     return (
         <select
             onChange={inputProps.onChange}

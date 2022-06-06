@@ -4,7 +4,7 @@ import IntelliJ from './intellij/intellij';
 import Sidebar from './sidebar/sidebar';
 import BottomControls, { Control } from './bottomControls/bottomControls';
 import Export from './export/export';
-import { Component, Task, Tutorial } from './tutorial/types';
+import { Task, Tutorial } from './tutorial/types';
 
 function App() {
     const [exportVisible, setExportVisible] = React.useState(false);
@@ -17,7 +17,7 @@ function App() {
     );
     const [selectedFilePath, setSelectedFilePath] = React.useState<string>('');
     const [highlightedComponents, setHighlightedComponents] = React.useState<
-        Component[]
+        string[]
     >([]);
 
     React.useEffect(() => {
@@ -26,7 +26,7 @@ function App() {
             return;
         }
         setHighlightedComponents(selectedTask.component);
-    }, [selectedTask, setHighlightedComponents]);
+    }, [selectedTutorial, selectedTask, setHighlightedComponents]);
 
     React.useEffect(() => {
         if (selectedControl === Control.TutorialSettings) {
@@ -79,6 +79,7 @@ function App() {
             />
             <IntelliJ
                 selectedTask={selectedTask}
+                selectedTutorial={selectedTutorial}
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
                 highlightedComponents={highlightedComponents}

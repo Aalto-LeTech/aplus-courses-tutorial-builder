@@ -1,24 +1,6 @@
 import { ActionArgumentFields, ArgumentInfo } from './actionArguments';
 
-export enum Component {
-    projectTree = 'projectTree',
-    editor = 'editor',
-    build = 'build',
-    repl = 'repl',
-}
-
-export const getComponent = (name: string) => {
-    switch (name) {
-        case 'editor':
-            return Component.editor;
-        case 'build':
-            return Component.build;
-        case 'repl':
-            return Component.repl;
-        default:
-            return Component.projectTree;
-    }
-};
+export const Components = ['projectTree', 'editor', 'build', 'repl'];
 
 export class Action {
     readonly command: string;
@@ -98,8 +80,8 @@ export type Tutorial = {
 export type Task = {
     instruction: string;
     info: string;
-    component: Component[];
-    assertClosed: Component[] | undefined;
+    component: string[];
+    assertClosed: string[] | undefined;
     freeRange: boolean;
     action: Action;
     actionArguments: any;

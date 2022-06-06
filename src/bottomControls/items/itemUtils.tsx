@@ -21,10 +21,9 @@ export type BooleanInputProps = {
 };
 
 export const useTextInput = (
-    defaultValue: string,
     placeholder: string
 ): TextInputProps<InputElement> => {
-    const [value, setValue] = React.useState(defaultValue);
+    const [value, setValue] = React.useState('');
     const [unsavedChanges, setUnsavedChanges] = React.useState(false);
     const onChange: React.ChangeEventHandler<InputElement> = (e) => {
         setValue(e.target.value);

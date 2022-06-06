@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Actions,
-    Component,
-    getComponent,
-    Task,
-    Tutorial,
-} from '../tutorial/types';
+import { Actions, Components, Task, Tutorial } from '../tutorial/types';
 import { useBooleanInput, useTextInput } from './items/itemUtils';
 import { SelectorListItem } from './items/listItem';
 import TextAreaItem from './items/textAreaItem';
@@ -25,10 +19,10 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     selectedTutorial,
     updateSelectedTask,
 }) => {
-    const instructionInput = useTextInput('', 'Instructions for the task');
-    const infoInput = useTextInput('', 'Extra info for the task');
-    const componentInput = useTextInput('projectTree', 'Component');
-    const actionInput = useTextInput('', 'Action');
+    const instructionInput = useTextInput('Instructions for the task');
+    const infoInput = useTextInput('Extra info for the task');
+    const componentInput = useTextInput('Component');
+    const actionInput = useTextInput('Action');
 
     const index =
         selectedTutorial !== null && selectedTask !== null
@@ -59,7 +53,7 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
         (value: string) => {
             if (selectedTask === null || value.trim() === '') return;
             selectedTask.component = Array.from(
-                new Set([...selectedTask.component, getComponent(value)])
+                new Set([...selectedTask.component, value.trim()])
             );
             updateSelectedTask(selectedTask);
         },
@@ -165,10 +159,7 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                 )}
                 selectorItems={
                     new Map(
-                        Object.values(Component).map((component) => [
-                            component,
-                            component,
-                        ])
+                        Components.map((component) => [component, component])
                     )
                 }
             />
