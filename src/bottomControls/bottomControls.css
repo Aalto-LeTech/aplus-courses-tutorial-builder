@@ -10,7 +10,6 @@
     height: 100%;
     display: flex;
     column-gap: 20px;
-
 }
 
 .bottom-item {
@@ -22,11 +21,11 @@
     min-width: 250px;
 }
 
-.bottom-item>* {
+.bottom-item > * {
     margin: 5px;
 }
 
-.bottom-item>textarea {
+.bottom-item > textarea {
     height: 100%;
 }
 
@@ -46,6 +45,6 @@
     padding: 3px 5px;
 }
 
-.list-item>span {
+.list-item > span {
     margin: 5px;
 }

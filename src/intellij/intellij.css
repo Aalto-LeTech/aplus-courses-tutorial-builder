@@ -11,7 +11,7 @@
     grid-template-columns: 24px 1fr 4fr 1fr 24px;
 }
 
-#intellij>div {
+#intellij > div {
     background-color: #3c3f41;
 }
 
@@ -27,7 +27,7 @@
     border-bottom: 1px solid #515151;
 }
 
-#intellij-menu>span {
+#intellij-menu > span {
     padding: 0px 6px;
     cursor: pointer;
 }
@@ -45,7 +45,7 @@
     padding-left: 25px;
 }
 
-#intellij-toolbar-bottom>span {
+#intellij-toolbar-bottom > span {
     padding: 6px;
     cursor: pointer;
 }
@@ -60,7 +60,7 @@
     border-right: 1px solid #303030;
 }
 
-#intellij-left-edge>span {
+#intellij-left-edge > span {
     writing-mode: sideways-lr;
     padding: 14px 3px;
     cursor: pointer;
@@ -76,7 +76,7 @@
     border-left: 1px solid #303030;
 }
 
-#intellij-right-edge>span {
+#intellij-right-edge > span {
     writing-mode: sideways-rl;
     padding: 14px 3px;
     cursor: pointer;
@@ -133,7 +133,7 @@
     overflow: auto;
 }
 
-#intellij-editor>pre {
+#intellij-editor > pre {
     margin: 0;
     display: flex;
     min-height: 100%;
@@ -166,8 +166,8 @@ summary {
 }
 
 #module-picker-label {
-    background-color: #FF0090;
-    color: #FFF;
+    background-color: #ff0090;
+    color: #fff;
     align-self: center;
 }
 
@@ -176,7 +176,7 @@ summary {
 }
 
 .intellij-dark {
-    filter: brightness(30%)
+    filter: brightness(30%);
 }
 
 #intellij-popup {

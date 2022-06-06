@@ -1,25 +1,25 @@
 import React from 'react';
 import hljs from 'highlight.js';
-import "../../node_modules/highlight.js/styles/base16/darcula.css"
+import '../../node_modules/highlight.js/styles/base16/darcula.css';
 
 type EditorProps = {
     file: File | null;
-}
+};
 
 const Editor: React.FC<EditorProps> = ({ file }) => {
-    const [fileText, setFileText] = React.useState<string>("");
-    const [lineNumbers, setLineNumbers] = React.useState<string>("");
+    const [fileText, setFileText] = React.useState<string>('');
+    const [lineNumbers, setLineNumbers] = React.useState<string>('');
 
     React.useEffect(() => {
         if (file === null) {
-            setFileText("");
-            setLineNumbers("");
+            setFileText('');
+            setLineNumbers('');
             return;
         }
         const reader = new FileReader();
-        const split = file.name.split(".");
+        const split = file.name.split('.');
         const language = split[split.length - 1];
-        reader.onload = e => {
+        reader.onload = (e) => {
             // const text = <string>(e.target?.result ?? "");
             const result = e.target?.result;
             const text = String(result);
@@ -28,25 +28,30 @@ const Editor: React.FC<EditorProps> = ({ file }) => {
             } catch (error) {
                 setFileText(hljs.highlightAuto(text).value);
             }
-            let linenumbersText = "";
-            for (let i = 1; i < text.split("\n").length; i++) {
+            let linenumbersText = '';
+            for (let i = 1; i < text.split('\n').length; i++) {
                 linenumbersText += `${i}<br>`;
             }
             setLineNumbers(linenumbersText);
             hljs.highlightAll();
-        }
+        };
         reader.readAsText(file);
     }, [file]);
 
     return (
         <>
             <pre>
-                <div id="intellij-linenumbers" dangerouslySetInnerHTML={{ __html: lineNumbers }}>
-                </div>
-                <code id="intellij-code-editor" dangerouslySetInnerHTML={{ __html: fileText }}>
-                </code>
+                <div
+                    id="intellij-linenumbers"
+                    dangerouslySetInnerHTML={{ __html: lineNumbers }}
+                ></div>
+                <code
+                    id="intellij-code-editor"
+                    dangerouslySetInnerHTML={{ __html: fileText }}
+                ></code>
             </pre>
-        </>);
-}
+        </>
+    );
+};
 
 export default Editor;

@@ -9,14 +9,18 @@ type ActionArgumentItemProps = {
     selectedTask: Task | null;
     fieldName: string;
     fieldInfo: FieldInfo;
-}
+};
 
-const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({ selectedTask, fieldName, fieldInfo }) => {
+const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
+    selectedTask,
+    fieldName,
+    fieldInfo,
+}) => {
     let args = selectedTask?.actionArguments[fieldName];
     if (args === undefined) {
         switch (fieldInfo.type) {
             case FieldType.String:
-                args = "";
+                args = '';
                 break;
             case FieldType.StringArray:
                 args = [];
@@ -27,20 +31,40 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({ selectedTask, f
         }
     }
     const inputProps = useTextInput(
-        fieldInfo.type === FieldType.StringArray ? "" : args,
-        fieldInfo.type === FieldType.StringArray ? "New argument" : "Argument"
-    )
+        fieldInfo.type === FieldType.StringArray ? '' : args,
+        fieldInfo.type === FieldType.StringArray ? 'New argument' : 'Argument'
+    );
     if (!selectedTask) return <></>;
     switch (fieldInfo.type) {
         case FieldType.String:
-            return <SingleLineItem title={fieldName} info={fieldInfo.info} inputProps={inputProps} onSubmit={() => { }} />
+            return (
+                <SingleLineItem
+                    title={fieldName}
+                    info={fieldInfo.info}
+                    inputProps={inputProps}
+                    onSubmit={() => {}}
+                />
+            );
 
         case FieldType.StringArray:
-            return <TextInputListItem title={fieldName} info={fieldInfo.info} listItems={args} inputProps={inputProps} onAddClick={() => { }} onRemoveClick={() => { }} />
+            return (
+                <TextInputListItem
+                    title={fieldName}
+                    info={fieldInfo.info}
+                    listItems={args}
+                    inputProps={inputProps}
+                    onAddClick={() => {}}
+                    onRemoveClick={() => {}}
+                />
+            );
         case FieldType.Boolean:
             break;
     }
-    return <div>{fieldName} {selectedTask.actionArguments[fieldName]}</div>
-}
+    return (
+        <div>
+            {fieldName} {selectedTask.actionArguments[fieldName]}
+        </div>
+    );
+};
 
 export default ActionArgumentItem;
