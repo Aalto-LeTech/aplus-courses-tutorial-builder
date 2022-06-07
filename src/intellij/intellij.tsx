@@ -29,8 +29,8 @@ const IntelliJ: React.FC<IntelliJProps> = ({
     useGranularEffect(
         () => {
             if (
-                selectedFile === null ||
-                selectedFile.webkitRelativePath === selectedFilePath
+                selectedFile?.webkitRelativePath === selectedFilePath ||
+                selectedFilePath.trim() === ''
             )
                 return;
 
