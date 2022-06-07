@@ -8,10 +8,14 @@ A+ Courses Tutorial Builder is a tool for building tutorials for the IntelliJ ID
 
 ## Running and publishing
 
-First, run ```npm install``` to install the dependencies.
+First, run `npm install` to install the dependencies.
 
-To run the development server, run ```npm run start```
+To run the development server, run `npm run start`
 
-To publish to GitHub Pages, run ```npm run predeploy && npm run deploy```
+To publish to GitHub Pages, run `npm run predeploy && npm run deploy`
 
 The published site is available at [https://aalto-letech.github.io/aplus-courses-tutorial-builder/](https://aalto-letech.github.io/aplus-courses-tutorial-builder/)
+
+<p align="center">
+  <img width="1500px" src="public/footer.png" alt="A+ Courses">
+</p>
