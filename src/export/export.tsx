@@ -13,15 +13,16 @@ type ExportProps = {
 
 const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
     const [exportCode, setExportCode] = React.useState('');
+    const [hideWrongFields, setHideWrongFields] = React.useState(false);
     const [copyButtonText, setCopyButtonText] =
         React.useState('Copy to clipboard');
 
     React.useEffect(() => {
         if (visible) {
-            setExportCode(tutorialsToJson(tutorials));
+            setExportCode(tutorialsToJson(tutorials, hideWrongFields));
             hljs.highlightAll();
         }
-    }, [exportCode, visible, tutorials]);
+    }, [exportCode, visible, tutorials, hideWrongFields]);
 
     const handleCopyToClipboard = React.useCallback(() => {
         navigator.clipboard.writeText(exportCode);
@@ -44,6 +45,11 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
                     <button onClick={() => saveJson(exportCode)}>Save</button>
                     <button onClick={handleCopyToClipboard}>
                         {copyButtonText}
+                    </button>
+                    <button onClick={() => setHideWrongFields((old) => !old)}>
+                        {hideWrongFields
+                            ? 'Show incorrect action arguments'
+                            : 'Hide incorrect action arguments'}
                     </button>
                     <button onClick={() => setVisible(false)}>Close</button>
                 </div>

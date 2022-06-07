@@ -39,7 +39,10 @@ export const getTutorialsFromJson = (jsonString: string): Tutorial[] => {
     return tutorials;
 };
 
-export const tutorialsToJson = (tutorials: Tutorial[]): string => {
+export const tutorialsToJson = (
+    tutorials: Tutorial[],
+    hideWrongFields: boolean
+): string => {
     let exported: Map<string, any> = new Map();
     for (const tutorial of tutorials) {
         const id = tutorial.name;
@@ -49,7 +52,20 @@ export const tutorialsToJson = (tutorials: Tutorial[]): string => {
             let newTask: any = { ...task };
             if (task.action !== undefined) {
                 newTask.action = task.action.toString();
+                if (hideWrongFields) {
+                    const actionArguments: any = {};
+                    const action = task.action;
+                    for (const [key, value] of Object.entries(
+                        task.actionArguments
+                    )) {
+                        if (action.fields.has(key)) {
+                            actionArguments[key] = value;
+                        }
+                    }
+                    newTask.actionArguments = actionArguments;
+                }
             }
+
             return newTask;
         });
         exported.set(id, row);
