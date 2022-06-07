@@ -21,7 +21,7 @@
     grid-column-start: 1;
     grid-column-end: 6;
     align-self: center;
-    padding: 4px 0px;
+    padding: 4px 0;
 }
 
 #intellij-menu {
@@ -30,7 +30,7 @@
 }
 
 #intellij-menu > span {
-    padding: 0px 6px;
+    padding: 0 6px;
     cursor: pointer;
 }
 
@@ -164,7 +164,7 @@
 }
 
 summary {
-    padding: 4px 0px;
+    padding: 4px 0;
 }
 
 #module-picker-label,

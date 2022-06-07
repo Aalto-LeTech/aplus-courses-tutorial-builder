@@ -25,9 +25,13 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
     }, [exportCode, visible, tutorials, hideWrongFields]);
 
     const handleCopyToClipboard = React.useCallback(() => {
-        navigator.clipboard.writeText(exportCode);
-        setCopyButtonText('Copied');
-        setTimeout(() => setCopyButtonText('Copy to clipboard'), 2000);
+        navigator.clipboard
+            .writeText(exportCode)
+            .then(() => setCopyButtonText('Copied'))
+            .catch(() => setCopyButtonText('Error'))
+            .finally(() =>
+                setTimeout(() => setCopyButtonText('Copy to clipboard'), 2000)
+            );
     }, [exportCode]);
 
     return (

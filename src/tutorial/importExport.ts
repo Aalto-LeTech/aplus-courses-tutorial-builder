@@ -74,7 +74,7 @@ export const tutorialsToJson = (
 };
 
 export const saveJson = (jsonString: string) => {
-    var el = document.createElement('a');
+    let el = document.createElement('a');
     el.setAttribute(
         'href',
         'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonString)
