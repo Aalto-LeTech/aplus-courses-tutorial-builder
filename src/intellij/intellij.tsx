@@ -176,8 +176,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 ref={projectTree}
                 id="intellij-toolwindow-left"
                 className={
-                    highlightedComponents.length > 0 &&
-                    !highlightedComponents.includes('projectTree')
+                    isOverlay && !highlightedComponents.includes('projectTree')
                         ? 'intellij-dark'
                         : ''
                 }
