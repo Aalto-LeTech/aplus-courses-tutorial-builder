@@ -13,6 +13,11 @@ type ActionArgumentItemProps = {
     argumentInfo: ArgumentInfo;
     handleAddListArgument: (argumentName: string, value: string) => void;
     handleRemoveListArgument: (argumentName: string, index: number) => void;
+    handleSaveListArgumentItem: (
+        argumentName: string,
+        index: number,
+        value: string
+    ) => void;
     handleSaveTextArgument: (argumentName: string, value: string) => void;
     handleChangeBooleanArgument: (
         argumentName: string,
@@ -28,6 +33,7 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
     argumentInfo,
     handleAddListArgument,
     handleRemoveListArgument,
+    handleSaveListArgumentItem,
     handleSaveTextArgument,
     handleChangeBooleanArgument,
     selectedFilePath,
@@ -138,6 +144,9 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                     }
                     onRemoveClick={(index) =>
                         handleRemoveListArgument(argumentName, index)
+                    }
+                    onSaveClick={(index, value) =>
+                        handleSaveListArgumentItem(argumentName, index, value)
                     }
                 />
             );

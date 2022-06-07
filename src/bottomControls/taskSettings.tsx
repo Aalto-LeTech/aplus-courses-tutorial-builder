@@ -102,6 +102,15 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
         [selectedTask, updateSelectedTask, componentInput]
     );
 
+    const handleSaveListArgumentItem = React.useCallback(
+        (argumentName: string, index: number, value: string) => {
+            if (selectedTask === null || componentInput.value === '') return;
+            selectedTask.actionArguments[argumentName][index] = value;
+            updateSelectedTask(selectedTask);
+        },
+        [selectedTask, updateSelectedTask, componentInput]
+    );
+
     const handleSaveTextArgument = React.useCallback(
         (argumentName: string, value: string) => {
             if (selectedTask === null) return;
@@ -210,6 +219,7 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                         argumentInfo={fieldInfo}
                         handleAddListArgument={handleAddListArgument}
                         handleRemoveListArgument={handleRemoveListArgument}
+                        handleSaveListArgumentItem={handleSaveListArgumentItem}
                         handleSaveTextArgument={handleSaveTextArgument}
                         handleChangeBooleanArgument={
                             handleChangeBooleanArgument

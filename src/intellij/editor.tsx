@@ -26,7 +26,6 @@ const Editor: React.FC<EditorProps> = ({ file }) => {
         const split = file.name.split('.');
         const language = split[split.length - 1];
         reader.onload = (e) => {
-            // const text = <string>(e.target?.result ?? "");
             const result = e.target?.result;
             const text = String(result);
             try {

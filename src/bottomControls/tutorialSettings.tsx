@@ -35,6 +35,11 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
         selectedTutorial.moduleDependencies.push(newDependency);
         updateSelectedTutorial(selectedTutorial);
     };
+    const handleDependencyChange = (index: number, value: string) => {
+        if (!selectedTutorial) return;
+        selectedTutorial.moduleDependencies[index] = value;
+        updateSelectedTutorial(selectedTutorial);
+    };
 
     const handleRemoveDependency = (index: number) => {
         if (!selectedTutorial) return;
@@ -62,6 +67,7 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
                         listItems={selectedTutorial.moduleDependencies}
                         onRemoveClick={handleRemoveDependency}
                         onAddClick={handleAddDependency}
+                        onSaveClick={handleDependencyChange}
                     />
                 </div>
             )}
