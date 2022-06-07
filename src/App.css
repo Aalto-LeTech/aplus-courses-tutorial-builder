@@ -1,9 +1,33 @@
+:root {
+    --border: #ccc;
+    --background: #fff;
+    --background-darker: #eee;
+    --text: #111;
+    --container-background: #ddd;
+    --button-background: #ddd;
+    --button-background-hover: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --border: #111;
+        --background: #1a1a1a;
+        --background-darker: #111;
+        --text: #fff;
+        --container-background: #000;
+        --button-background: #111;
+        --button-background-hover: #222;
+    }
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
+    color: var(--text);
+    background-color: var(--container-background);
 }
 
 div {
@@ -19,7 +43,7 @@ div {
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: 1fr 250px;
-    background-color: #ddd;
+    background-color: var(--container-background);
 }
 
 .hidden {
@@ -41,11 +65,11 @@ button,
 .round-button {
     all: unset;
     cursor: pointer;
-    border: 1px solid #cccccc;
+    border: 1px solid var(--border);
     border-radius: 15px;
     padding: 5px 15px;
     margin: 5px;
-    background-color: #dddddd;
+    background-color: var(--button-background);
     display: inline-block;
     font-size: 12px;
     user-select: none;
@@ -54,14 +78,14 @@ button,
 button:hover,
 .round-button:hover,
 .sidebar-item:hover {
-    background-color: #ccc !important;
+    background-color: var(--button-background-hover) !important;
 }
 
 .rounded-item,
 .bottom-item {
     border-radius: 15px;
     box-shadow: 0px 0px 5px 1px #0004;
-    background-color: #fff;
+    background-color: var(--background);
 }
 
 .task {
@@ -69,7 +93,7 @@ button:hover,
 }
 
 .task-index {
-    background-color: #eee;
+    background-color: var(--background-darker);
     margin: -10px 10px -10px -10px;
     padding: 10px;
 }
@@ -80,7 +104,9 @@ input[type='text'] {
     border-radius: 15px;
     padding: 5px;
     margin: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
+    background-color: var(--background-darker);
+    color: var(--text);
     flex-grow: 1;
 }
 
@@ -89,20 +115,23 @@ select {
     border-radius: 15px;
     padding: 5px;
     margin: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
     font-size: 12px;
-    background-color: #eee;
+    background-color: var(--button-background);
+    color: var(--text);
 }
 
 select:hover {
-    background-color: #ddd;
+    background-color: var(--button-background-hover);
 }
 
 textarea {
     border-radius: 15px;
     padding: 5px;
     margin: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
+    background-color: var(--background-darker);
+    color: var(--text);
 }
 
 .flex-grow {

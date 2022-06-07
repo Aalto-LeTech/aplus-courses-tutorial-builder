@@ -32,8 +32,26 @@
     background-color: #fafafa;
 }
 
+@media (prefers-color-scheme: dark) {
+    #new-task,
+    #tutorial-settings-button {
+        background-color: #121212;
+    }
+}
+
 .sidebar-item {
     padding: 10px;
     cursor: pointer;
     margin: 10px;
+}
+
+.task {
+    display: flex;
+}
+
+.task-index {
+    background-color: var(--background-darker);
+    margin: -10px 10px -10px -10px;
+    padding: 10px;
+    border-radius: 15px 0px 0px 15px;
 }
