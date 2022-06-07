@@ -3,6 +3,7 @@ import './intellij.css';
 import ProjectTree from './projectTree';
 import Editor from './editor';
 import { Task, Tutorial } from '../tutorial/types';
+import { useGranularEffect } from 'granular-hooks';
 
 type IntelliJProps = {
     selectedTask: Task | null;
@@ -20,8 +21,45 @@ const IntelliJ: React.FC<IntelliJProps> = ({
     highlightedComponents,
 }) => {
     const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
-    const isOverlay = highlightedComponents.length > 0;
+    const [files, setFiles] = React.useState<Map<string, File>>(new Map());
+    const [hideOverlay, setHideOverlay] = React.useState(false);
+    const isOverlay = !hideOverlay && highlightedComponents.length > 0;
     const darkClass = isOverlay ? 'intellij-dark' : '';
+
+    useGranularEffect(
+        () => {
+            if (
+                selectedFile === null ||
+                selectedFile.webkitRelativePath === selectedFilePath
+            )
+                return;
+
+            for (const file of files) {
+                if (file[0] === selectedFilePath.trim()) {
+                    setSelectedFile(file[1]);
+                    return;
+                }
+            }
+
+            alert(`File ${selectedFilePath} not found`);
+        },
+        [selectedFilePath],
+        [selectedFile, files, setSelectedFile]
+    );
+
+    useGranularEffect(
+        () => {
+            if (
+                selectedFile === null ||
+                selectedFile.webkitRelativePath === selectedFilePath
+            )
+                return;
+
+            setSelectedFilePath(selectedFile.webkitRelativePath);
+        },
+        [selectedFile],
+        [selectedFilePath, setSelectedFilePath]
+    );
 
     const popup = React.useRef<HTMLDivElement>(null);
     const intellij = React.useRef<HTMLDivElement>(null);
@@ -78,19 +116,32 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         popupEl.style.display = 'flex';
         popupEl.style.transform = onTop
             ? `translate(${left - intellijLeft}px, ${
-                  top - popupHeight - intellijTop - 10
+                  top - popupHeight - intellijTop - 20
               }px)`
-            : `translate(${left + width - intellijLeft + 10}px, ${
+            : `translate(${left + width - intellijLeft}px, ${
                   top - intellijTop
               }px)`;
     }, [selectedTutorial, selectedTask, isOverlay]);
 
     return (
-        <div ref={intellij} className="rounded-item" id="intellij">
+        <div
+            ref={intellij}
+            className="rounded-item"
+            id="intellij"
+            style={isOverlay ? { backgroundColor: '#121314' } : {}}
+        >
             <div ref={popup} id="intellij-popup">
                 <h2>{selectedTask?.instruction}</h2>
                 <p>{selectedTask?.info}</p>
             </div>
+            {highlightedComponents.length > 0 && (
+                <button
+                    id="intellij-hide-overlay"
+                    onClick={() => setHideOverlay((oldHide) => !oldHide)}
+                >
+                    {hideOverlay ? 'Show Overlay' : 'Hide Overlay'}
+                </button>
+            )}
             <div
                 className={`intellij-whole-width ${darkClass}`}
                 id="intellij-menu"
@@ -131,14 +182,16 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                         : ''
                 }
             >
-                <ProjectTree setSelectedFile={setSelectedFile} />
+                <ProjectTree
+                    setSelectedFile={setSelectedFile}
+                    setFiles={setFiles}
+                />
             </div>
             <div
                 ref={editor}
                 id="intellij-editor"
                 className={
-                    highlightedComponents.length > 0 &&
-                    !highlightedComponents.includes('editor')
+                    isOverlay && !highlightedComponents.includes('editor')
                         ? 'intellij-dark'
                         : ''
                 }

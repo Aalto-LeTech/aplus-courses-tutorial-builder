@@ -1,3 +1,4 @@
+import { useGranularEffect } from 'granular-hooks';
 import React from 'react';
 import { ArgumentInfo, ArgumentType } from '../../tutorial/actionArguments';
 import { Task } from '../../tutorial/types';
@@ -17,6 +18,8 @@ type ActionArgumentItemProps = {
         argumentName: string,
         isFreeRange: boolean
     ) => void;
+    selectedFilePath: string;
+    setSelectedFilePath: (path: string) => void;
 };
 
 const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
@@ -27,6 +30,8 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
     handleRemoveListArgument,
     handleSaveTextArgument,
     handleChangeBooleanArgument,
+    selectedFilePath,
+    setSelectedFilePath,
 }) => {
     let args = selectedTask?.actionArguments[argumentName];
     if (args === undefined) {
@@ -47,14 +52,64 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
             ? 'New argument'
             : 'Argument'
     );
-    React.useEffect(() => {
-        if (argumentInfo.type === ArgumentType.String)
-            textInputProps.setValue(args);
-    });
+    useGranularEffect(
+        () => {
+            if (argumentInfo.type === ArgumentType.String)
+                textInputProps.setValue(args);
+        },
+        [],
+        [textInputProps]
+    );
 
     const booleanInputProps = useBooleanInput(false, (checked) => {
         handleChangeBooleanArgument(argumentName, checked);
     });
+
+    const argumentSpecificAddition = () => {
+        if (argumentName === 'filePath') {
+            return (
+                <div>
+                    <button
+                        onClick={() =>
+                            setSelectedFilePath(textInputProps.value)
+                        }
+                    >
+                        Open file in editor
+                    </button>
+                    <button
+                        onClick={() => {
+                            textInputProps.setValue(selectedFilePath);
+                            handleSaveTextArgument(
+                                argumentName,
+                                selectedFilePath
+                            );
+                        }}
+                    >
+                        Set path from open file
+                    </button>
+                </div>
+            );
+        }
+
+        if (argumentName === 'module') {
+            return (
+                <div>
+                    <button
+                        onClick={() => {
+                            const module = selectedFilePath.split('/')[0];
+                            textInputProps.setValue(module);
+                            handleSaveTextArgument(argumentName, module);
+                        }}
+                    >
+                        Set module from open file
+                    </button>
+                </div>
+            );
+        }
+
+        return <></>;
+    };
+
     if (!selectedTask) return <></>;
     switch (argumentInfo.type) {
         case ArgumentType.String:
@@ -66,7 +121,9 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                     onSubmit={(value) =>
                         handleSaveTextArgument(argumentName, value)
                     }
-                />
+                >
+                    {argumentSpecificAddition()}
+                </SingleLineItem>
             );
 
         case ArgumentType.StringArray:

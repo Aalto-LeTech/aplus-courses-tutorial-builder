@@ -1,10 +1,10 @@
 import React from 'react';
-import { TextInputProps } from './itemUtils';
+import { SelectInputProps } from './itemUtils';
 import Selector from './selector';
 
 type SelectorItemProps = {
     title: string;
-    inputProps: TextInputProps<HTMLSelectElement>;
+    inputProps: SelectInputProps;
     items: Map<string, string>;
     onSubmit: () => void;
 };

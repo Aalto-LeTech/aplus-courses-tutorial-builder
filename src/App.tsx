@@ -90,6 +90,8 @@ function App() {
                 selectedTutorial={selectedTutorial}
                 updateSelectedTutorial={updateSelectedTutorial}
                 updateSelectedTask={updateSelectedTask}
+                selectedFilePath={selectedFilePath}
+                setSelectedFilePath={setSelectedFilePath}
             />
         </div>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Task, Tutorial } from '../tutorial/types';
 import './bottomControls.css';
 import EmptyControl from './emptyControl';
@@ -17,6 +18,8 @@ type BottomControlsProps = {
     updateSelectedTutorial: (updatedTutorial: Tutorial) => void;
     updateSelectedTask: (updatedTasks: Task) => void;
     selectedTask: Task | null;
+    selectedFilePath: string;
+    setSelectedFilePath: (path: string) => void;
 };
 
 const BottomControls: React.FC<BottomControlsProps> = ({
@@ -25,24 +28,44 @@ const BottomControls: React.FC<BottomControlsProps> = ({
     updateSelectedTutorial,
     updateSelectedTask,
     selectedTask,
+    selectedFilePath,
+    setSelectedFilePath,
 }) => {
+    const [fullscreen, setFullscreen] = useState(false);
     return (
-        <div className="rounded-item" id="bottom-controls">
-            {selectedControl === Control.TaskSettings ? (
-                <TaskSettings
-                    selectedTask={selectedTask}
-                    selectedTutorial={selectedTutorial}
-                    updateSelectedTask={updateSelectedTask}
-                />
-            ) : selectedControl === Control.TutorialSettings ? (
-                <TutorialSettings
-                    selectedTutorial={selectedTutorial}
-                    updateSelectedTutorial={updateSelectedTutorial}
-                />
-            ) : (
-                <EmptyControl />
+        <>
+            {fullscreen && (
+                <div
+                    id="bottom-controls-fullscreen-background"
+                    onClick={() => setFullscreen(false)}
+                ></div>
             )}
-        </div>
+            <div
+                className={`rounded-item ${
+                    selectedControl === Control.Empty ? 'welcome' : ''
+                } ${fullscreen ? 'fullscreen' : ''}`}
+                id="bottom-controls"
+            >
+                {selectedControl === Control.TaskSettings ? (
+                    <TaskSettings
+                        selectedTask={selectedTask}
+                        selectedTutorial={selectedTutorial}
+                        updateSelectedTask={updateSelectedTask}
+                        fullscreen={fullscreen}
+                        setFullscreen={setFullscreen}
+                        selectedFilePath={selectedFilePath}
+                        setSelectedFilePath={setSelectedFilePath}
+                    />
+                ) : selectedControl === Control.TutorialSettings ? (
+                    <TutorialSettings
+                        selectedTutorial={selectedTutorial}
+                        updateSelectedTutorial={updateSelectedTutorial}
+                    />
+                ) : (
+                    <EmptyControl />
+                )}
+            </div>
+        </>
     );
 };
 

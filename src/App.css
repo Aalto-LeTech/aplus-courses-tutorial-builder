@@ -81,6 +81,21 @@ input[type='text'] {
     padding: 5px;
     margin: 5px;
     border: 1px solid #ccc;
+    flex-grow: 1;
+}
+
+select {
+    min-width: 20px;
+    border-radius: 15px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+    background-color: #eee;
+}
+
+select:hover {
+    background-color: #ddd;
 }
 
 textarea {

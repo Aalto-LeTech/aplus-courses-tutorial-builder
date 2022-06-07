@@ -9,6 +9,8 @@
 
     grid-template-rows: 30px 24px 3fr 1fr 24px 24px;
     grid-template-columns: 24px 1fr 4fr 1fr 24px;
+
+    padding: 10px;
 }
 
 #intellij > div {
@@ -165,14 +167,26 @@ summary {
     padding: 4px 0px;
 }
 
-#module-picker-label {
-    background-color: #ff0090;
+#module-picker-label,
+#intellij-hide-overlay {
+    background-color: #2652c7;
     color: #fff;
+}
+
+#intellij-hide-overlay {
+    z-index: 3;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+#module-picker-label {
     align-self: center;
 }
 
-#module-picker-label:hover {
-    background-color: #d30078;
+#module-picker-label:hover,
+#intellij-hide-overlay:hover {
+    background-color: #2043a5 !important;
 }
 
 .intellij-dark {

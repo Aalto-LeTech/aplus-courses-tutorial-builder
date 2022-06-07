@@ -109,7 +109,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div id="sidebar-top">
                 {tutorials.length > 0 && (
                     <div>
-                        <label htmlFor="tutorial-select">Tutorial: </label>
                         <select
                             name="tutorial-select"
                             id="tutorial-select"

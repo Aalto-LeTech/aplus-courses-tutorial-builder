@@ -14,7 +14,9 @@ const TextAreaItem: React.FC<TextAreaItemProps> = ({
 }) => {
     return (
         <form
-            className="bottom-item"
+            className={`bottom-item ${
+                inputProps.unsavedChanges ? 'unsaved' : ''
+            }`}
             onSubmit={(e) => {
                 e.preventDefault();
                 onSubmit();

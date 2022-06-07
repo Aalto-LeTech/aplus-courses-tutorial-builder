@@ -9,6 +9,12 @@ type EditorProps = {
 const Editor: React.FC<EditorProps> = ({ file }) => {
     const [fileText, setFileText] = React.useState<string>('');
     const [lineNumbers, setLineNumbers] = React.useState<string>('');
+    const ref = React.useRef<HTMLElement | null>(null);
+
+    React.useEffect(() => {
+        if (ref.current !== null)
+            ref.current.setAttribute('spellcheck', 'false');
+    }, [ref]);
 
     React.useEffect(() => {
         if (file === null) {
@@ -48,6 +54,8 @@ const Editor: React.FC<EditorProps> = ({ file }) => {
                 <code
                     id="intellij-code-editor"
                     dangerouslySetInnerHTML={{ __html: fileText }}
+                    contentEditable
+                    ref={ref}
                 ></code>
             </pre>
         </>

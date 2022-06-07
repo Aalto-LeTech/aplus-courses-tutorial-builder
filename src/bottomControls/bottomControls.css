@@ -5,6 +5,41 @@
     overflow-x: auto;
 }
 
+#bottom-controls.welcome {
+    width: 1200px;
+    justify-self: center;
+    overflow: hidden;
+}
+
+#bottom-controls.fullscreen {
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    left: 8%;
+    right: 8%;
+    z-index: 5;
+    overflow-y: auto;
+}
+
+.bottom-container.fullscreen {
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: stretch;
+}
+
+#bottom-controls.fullscreen .bottom-item {
+    overflow-y: revert;
+}
+
+#bottom-controls-fullscreen-background {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: #0009;
+}
+
 .bottom-container {
     padding: 10px;
     height: 100%;
@@ -27,6 +62,12 @@
 
 .bottom-item > textarea {
     height: 100%;
+    max-width: 95%;
+}
+
+.bottom-item.unsaved {
+    box-shadow: 0px 0px 10px 3px #2652c7aa !important;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .bottom-item-title {
@@ -43,6 +84,7 @@
     box-shadow: 0px 0px 5px 1px #0005;
     border-radius: 15px;
     padding: 3px 5px;
+    margin-bottom: 8px;
 }
 
 .list-item > span {

@@ -8,12 +8,15 @@ type MyFile = {
 
 type ProjectTreeProps = {
     setSelectedFile: (file: File | null) => void;
+    setFiles: React.Dispatch<React.SetStateAction<Map<string, File>>>;
 };
 
-const ProjectTree: React.FC<ProjectTreeProps> = ({ setSelectedFile }) => {
+const ProjectTree: React.FC<ProjectTreeProps> = ({
+    setSelectedFile,
+    setFiles,
+}) => {
     const modulePicker = React.useRef<HTMLInputElement>(null);
     const [modules, setModules] = React.useState<MyFile[]>([]);
-    // const [files, setFiles] = React.useState<Map<string, File>>(new Map());
 
     React.useEffect(() => {
         if (modulePicker.current !== null) {
@@ -57,7 +60,7 @@ const ProjectTree: React.FC<ProjectTreeProps> = ({ setSelectedFile }) => {
             parent.children.sort(
                 (a, b) => b.children.length - a.children.length
             );
-            // setFiles(oldFiles => oldFiles.set(file.webkitRelativePath, file));
+            setFiles((oldFiles) => oldFiles.set(file.webkitRelativePath, file));
         }
         setModules((oldModules) => [...oldModules, root]);
     };
@@ -67,6 +70,7 @@ const ProjectTree: React.FC<ProjectTreeProps> = ({ setSelectedFile }) => {
             return (
                 <div
                     className="intellij-file"
+                    key={file.file?.webkitRelativePath}
                     onClick={() => setSelectedFile(file?.file)}
                 >
                     {file.name}
@@ -75,8 +79,13 @@ const ProjectTree: React.FC<ProjectTreeProps> = ({ setSelectedFile }) => {
         }
 
         return (
-            <details className="intellij-dir">
-                <summary>{file.name}</summary>
+            <details
+                className="intellij-dir"
+                key={file.file?.webkitRelativePath ?? file.name}
+            >
+                <summary key={file.file?.webkitRelativePath + 'summary'}>
+                    {file.name}
+                </summary>
                 {file.children.map((child) => myfileToTreeNode(child))}
             </details>
         );

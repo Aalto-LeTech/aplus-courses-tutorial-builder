@@ -1,13 +1,21 @@
 import React from 'react';
-import { TextInput, TextInputProps } from './itemUtils';
+import BottomItemBase from './bottomItemBase';
+import {
+    InputElement,
+    SelectInputProps,
+    TextInput,
+    TextInputProps,
+} from './itemUtils';
 import Selector from './selector';
 
 type ListItemProps = {
     title: string;
     info: string;
     onRemoveClick: (index: number) => void;
+    inputProps: TextInputProps<InputElement> | SelectInputProps;
     listItems: string[];
 };
+
 type ListItemPropsChildren = ListItemProps & {
     children: React.ReactNode;
 };
@@ -19,7 +27,7 @@ export type TextInputListItemProps = ListItemProps & {
 
 export type SelectorListItemProps = ListItemProps & {
     selectorItems: Map<string, string>;
-    inputProps: TextInputProps<HTMLSelectElement>;
+    inputProps: SelectInputProps;
     onAddClick: (value: string) => void;
 };
 
@@ -28,24 +36,25 @@ const ListItem: React.FC<ListItemPropsChildren> = ({
     info,
     onRemoveClick,
     listItems,
-    children,
+    inputProps,
+    children: inputChild,
 }) => {
     return (
-        <div className="bottom-item">
-            <h2>{title}</h2>
-            <div>{info}</div>
-            {Array.from(listItems.entries()).map(([index, item]) => {
-                return (
-                    <div key={index} className="list-item">
-                        <span>{item}</span>
-                        <button onClick={() => onRemoveClick(index)}>
-                            Remove
-                        </button>
-                    </div>
-                );
-            })}
-            <div className="list-item">{children}</div>
-        </div>
+        <BottomItemBase title={title} info={info} inputProps={inputProps}>
+            <div>
+                {Array.from(listItems.entries()).map(([index, item]) => {
+                    return (
+                        <div key={index} className="list-item">
+                            <span>{item}</span>
+                            <button onClick={() => onRemoveClick(index)}>
+                                Remove
+                            </button>
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="list-item">{inputChild}</div>
+        </BottomItemBase>
     );
 };
 
@@ -62,6 +71,7 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
             title={title}
             info={info}
             listItems={listItems}
+            inputProps={inputProps}
             onRemoveClick={onRemoveClick}
         >
             <TextInput {...inputProps} />
@@ -69,6 +79,7 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
                 onClick={() => {
                     onAddClick(inputProps.value);
                     inputProps.setValue('');
+                    inputProps.setUnsavedChanges(false);
                 }}
             >
                 Add
@@ -90,6 +101,7 @@ export const SelectorListItem: React.FC<SelectorListItemProps> = ({
             title={title}
             info={info}
             listItems={listItems}
+            inputProps={inputProps}
             onRemoveClick={onRemoveClick}
         >
             <Selector inputProps={inputProps} items={selectorItems} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import BottomItemBase from './bottomItemBase';
 import { TextInput, TextInputProps } from './itemUtils';
 
 type SingleLineItemProps = {
@@ -6,6 +7,7 @@ type SingleLineItemProps = {
     info: string;
     inputProps: TextInputProps<HTMLInputElement>;
     onSubmit: (value: string) => void;
+    children?: JSX.Element;
 };
 
 const SingleLineItem: React.FC<SingleLineItemProps> = ({
@@ -13,26 +15,23 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
     info,
     inputProps,
     onSubmit,
+    children,
 }) => {
     return (
-        <form
-            className="bottom-item"
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit(inputProps.value);
-                inputProps.setUnsavedChanges(false);
-            }}
-        >
-            <label>
-                <h2>{title}</h2>
-            </label>
-            <div>{info}</div>
-            <TextInput {...inputProps} />
-            {inputProps.unsavedChanges && (
-                <p style={{ marginTop: 0, marginBottom: 0 }}>Unsaved changes</p>
-            )}
-            <button type="submit">Save</button>
-        </form>
+        <BottomItemBase title={title} info={info} inputProps={inputProps}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit(inputProps.value);
+                    inputProps.setUnsavedChanges(false);
+                }}
+                className="list-item"
+            >
+                <TextInput {...inputProps} />
+                <button type="submit">Save</button>
+            </form>
+            {children ?? <></>}
+        </BottomItemBase>
     );
 };
 

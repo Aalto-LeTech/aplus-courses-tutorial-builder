@@ -1,20 +1,24 @@
+import { useGranularEffect } from 'granular-hooks';
 import React from 'react';
-import { useEffect } from 'react';
-import { TextInputProps } from './itemUtils';
+import { SelectInputProps } from './itemUtils';
 
 type SelectorProps = {
-    inputProps: TextInputProps<HTMLSelectElement>;
+    inputProps: SelectInputProps;
     items: Map<string, string>;
 };
 
 const Selector: React.FC<SelectorProps> = ({ inputProps, items }) => {
-    useEffect(() => {
-        inputProps.setValue([...items.keys()][0]);
-    }, []);
+    useGranularEffect(
+        () => {
+            inputProps.setValue([...items.keys()][0]);
+        },
+        [],
+        [inputProps, items]
+    );
     return (
         <select
+            id={inputProps.uuid}
             onChange={inputProps.onChange}
-            placeholder={inputProps.placeholder}
             value={inputProps.value}
         >
             {Array.from(items.entries()).map(([value, text]) => (

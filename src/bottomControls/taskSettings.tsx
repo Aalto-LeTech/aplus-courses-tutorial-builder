@@ -1,6 +1,10 @@
 import React from 'react';
 import { Actions, Components, Task, Tutorial } from '../tutorial/types';
-import { useBooleanInput, useTextInput } from './items/itemUtils';
+import {
+    useBooleanInput,
+    useSelectInput,
+    useTextInput,
+} from './items/itemUtils';
 import { SelectorListItem } from './items/listItem';
 import TextAreaItem from './items/textAreaItem';
 import { useGranularEffect } from 'granular-hooks';
@@ -12,16 +16,24 @@ type TaskSettingsProps = {
     selectedTask: Task | null;
     selectedTutorial: Tutorial | null;
     updateSelectedTask: (updatedTasks: Task) => void;
+    fullscreen: boolean;
+    setFullscreen: (fullscreen: boolean) => void;
+    selectedFilePath: string;
+    setSelectedFilePath: (path: string) => void;
 };
 
 const TaskSettings: React.FC<TaskSettingsProps> = ({
     selectedTask,
     selectedTutorial,
     updateSelectedTask,
+    fullscreen,
+    setFullscreen,
+    selectedFilePath,
+    setSelectedFilePath,
 }) => {
     const instructionInput = useTextInput('Instructions for the task');
     const infoInput = useTextInput('Extra info for the task');
-    const componentInput = useTextInput('Component');
+    const componentInput = useSelectInput();
     const actionInput = useTextInput('Action');
 
     const index =
@@ -134,9 +146,16 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     if (!selectedTask) return <></>;
 
     return (
-        <div className="bottom-container" id="task-settings">
+        <div
+            className={`bottom-container ${fullscreen ? 'fullscreen' : ''}`}
+            id="task-settings"
+            onClick={(e) => e.stopPropagation()}
+        >
             <div className="bottom-item bottom-item-title">
                 <h1 id="task-settings-title">Task {index} settings</h1>
+                <button onClick={() => setFullscreen(!fullscreen)}>
+                    Toggle Fullscreen
+                </button>
             </div>
             <TextAreaItem
                 title="Instruction"
@@ -195,6 +214,8 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                         handleChangeBooleanArgument={
                             handleChangeBooleanArgument
                         }
+                        selectedFilePath={selectedFilePath}
+                        setSelectedFilePath={setSelectedFilePath}
                     />
                 )
             )}
