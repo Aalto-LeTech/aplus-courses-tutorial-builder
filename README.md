@@ -4,7 +4,7 @@
   </a>
 </p>
 
-A+ Courses Tutorial Builder is a tool for building tutorials for the IntelliJ IDEA [A+ Courses plugin.](https://github.com/Aalto-LeTech/aplus-courses) Tutorials are a feature of the plugin, teaching users how to use the IDE. Courses using the plugin can have their own tutorials, and course maintainers can use this tool to create and edit them.
+A+ Courses Tutorial Builder is a tool for building tutorials for the IntelliJ IDEA [A+ Courses plugin.](https://github.com/Aalto-LeTech/aplus-courses) Tutorials are a feature of the plugin teaching users how to use the IDE. Courses using the plugin can have their own tutorials, and course maintainers can use this tool to create and edit them.
 
 ## Running and publishing
 
