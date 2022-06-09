@@ -12,7 +12,7 @@ First, run `npm install` to install the dependencies.
 
 To run the development server, run `npm run start`
 
-To publish to GitHub Pages, run `npm run predeploy && npm run deploy`
+To publish to GitHub Pages, run `npm run predeploy && npm run deploy`. It will make a commit to the `gh-pages` branch and GitHub Actions will update the site.
 
 The published site is available at [https://aalto-letech.github.io/aplus-courses-tutorial-builder/](https://aalto-letech.github.io/aplus-courses-tutorial-builder/)
 
