@@ -1,3 +1,4 @@
+import { ArgumentType } from './actionArguments';
 import { Actions, Task, Tutorial } from './types';
 
 export const getTutorialsFromJson = (jsonString: string): Tutorial[] => {
@@ -23,15 +24,18 @@ export const getTutorialsFromJson = (jsonString: string): Tutorial[] => {
         }
         const moduleDependencies: string[] = jsonTutorial['moduleDependencies'];
         const jsonTasks = jsonTutorial['tasks'];
-        // Convert component to array
+
         for (const task of jsonTasks) {
+            // Convert component to array
             if (Array.isArray(task.component)) {
             } else if (task.component === undefined) {
                 task.component = [];
             } else {
                 task.component = [task.component];
             }
+            // Make assertClosed array if undefined
             if (task.assertClosed === undefined) task.assertClosed = [];
+            // Get more action info based on action name
             task.action = (Actions as any)[task.action];
         }
         const tasks: Task[] = jsonTasks;
@@ -64,6 +68,25 @@ export const tutorialsToJson = (
                         }
                     }
                     newTask.actionArguments = actionArguments;
+                }
+                if (task.actionArguments === undefined) {
+                    task.actionArguments = {};
+                }
+                for (const [
+                    command,
+                    argument,
+                ] of task.action.fields.entries()) {
+                    if (!task.actionArguments[command]) {
+                        let value: any;
+                        if (argument.type === ArgumentType.String) {
+                            value = '';
+                        } else if (argument.type === ArgumentType.StringArray) {
+                            value = [];
+                        } else if (argument.type === ArgumentType.Boolean) {
+                            value = false;
+                        }
+                        task.actionArguments[command] = value;
+                    }
                 }
             }
 
