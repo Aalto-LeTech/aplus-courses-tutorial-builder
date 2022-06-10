@@ -13,7 +13,7 @@ type ExportProps = {
 
 const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
     const [exportCode, setExportCode] = React.useState('');
-    const [hideWrongFields, setHideWrongFields] = React.useState(false);
+    const [hideWrongFields, setHideWrongFields] = React.useState(true);
     const [copyButtonText, setCopyButtonText] =
         React.useState('Copy to clipboard');
 
@@ -45,15 +45,15 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
                 id="export-window"
                 onClick={(event) => event.stopPropagation()}
             >
-                <div>
+                <div id="export-buttons">
                     <button onClick={() => saveJson(exportCode)}>Save</button>
                     <button onClick={handleCopyToClipboard}>
                         {copyButtonText}
                     </button>
                     <button onClick={() => setHideWrongFields((old) => !old)}>
                         {hideWrongFields
-                            ? 'Show incorrect action arguments'
-                            : 'Hide incorrect action arguments'}
+                            ? 'Show all saved action arguments'
+                            : 'Show only correct action arguments'}
                     </button>
                     <button onClick={() => setVisible(false)}>Close</button>
                 </div>

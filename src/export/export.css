@@ -22,3 +22,10 @@
 #export-code {
     border-radius: 15px;
 }
+
+#export-buttons {
+    position: sticky;
+    top: -25px;
+    background-color: var(--background);
+    padding: 10px;
+}
