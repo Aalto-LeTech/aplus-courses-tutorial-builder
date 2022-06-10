@@ -11,6 +11,7 @@ type IntelliJProps = {
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
     highlightedComponents: string[];
+    autoSavedTime: Date | null;
 };
 
 const IntelliJ: React.FC<IntelliJProps> = ({
@@ -19,6 +20,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
     selectedFilePath,
     setSelectedFilePath,
     highlightedComponents,
+    autoSavedTime,
 }) => {
     const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
     const [files, setFiles] = React.useState<Map<string, File>>(new Map());
@@ -236,8 +238,9 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 className={`intellij-whole-width ${darkClass}`}
                 id="intellij-bottom-edge"
             >
-                Build completed successfully with 1 warning in 12 sec, 77 ms
-                (moments ago)
+                {autoSavedTime === null
+                    ? 'Changes will be auto-saved every minute'
+                    : `Saved changes to local storage at ${autoSavedTime.toLocaleString()}`}
             </div>
         </div>
     );

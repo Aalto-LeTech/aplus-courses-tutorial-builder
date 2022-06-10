@@ -78,6 +78,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     };
 
     const importTutorialSteps = (file: File) => {
+        if (
+            !window.confirm(
+                'Importing tutorials will overwrite the existing ones. Continue?'
+            )
+        )
+            return;
         const reader = new FileReader();
         reader.onload = (e) => {
             const text = String(e.target?.result);

@@ -5,6 +5,8 @@ import Sidebar from './sidebar/sidebar';
 import BottomControls, { Control } from './bottomControls/bottomControls';
 import Export from './export/export';
 import { Task, Tutorial } from './tutorial/types';
+import { getTutorialsFromJson, tutorialsToJson } from './tutorial/importExport';
+import { useInterval } from 'usehooks-ts';
 
 function App() {
     const [exportVisible, setExportVisible] = React.useState(false);
@@ -19,6 +21,29 @@ function App() {
     const [highlightedComponents, setHighlightedComponents] = React.useState<
         string[]
     >([]);
+    const [autoSavedTime, setAutoSavedTime] = React.useState<Date | null>(null);
+
+    React.useEffect(() => {
+        const tutorialJson = window.localStorage.getItem('tutorialJson');
+        if (
+            tutorialJson !== null &&
+            Object.keys(JSON.parse(tutorialJson).tutorials).length > 0 &&
+            tutorials.length === 0 &&
+            window.confirm('Open auto-saved tutorials?')
+        ) {
+            setTutorials(getTutorialsFromJson(tutorialJson));
+        }
+    }, []);
+
+    useInterval(() => {
+        if (tutorials.length > 0) {
+            window.localStorage.setItem(
+                'tutorialJson',
+                tutorialsToJson(tutorials, false)
+            );
+            setAutoSavedTime(new Date());
+        }
+    }, 60000);
 
     React.useEffect(() => {
         if (!selectedTask || !selectedTutorial) return;
@@ -89,6 +114,7 @@ function App() {
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
                 highlightedComponents={highlightedComponents}
+                autoSavedTime={autoSavedTime}
             />
             <BottomControls
                 selectedControl={selectedControl}
