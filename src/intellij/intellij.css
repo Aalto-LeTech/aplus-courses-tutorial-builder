@@ -63,9 +63,10 @@
 }
 
 #intellij-left-edge > span {
-    writing-mode: sideways-lr;
+    writing-mode: vertical-rl;
     padding: 14px 3px;
     cursor: pointer;
+    transform: rotate(180deg);
 }
 
 #intellij-right-edge {
@@ -79,7 +80,7 @@
 }
 
 #intellij-right-edge > span {
-    writing-mode: sideways-rl;
+    writing-mode: vertical-rl;
     padding: 14px 3px;
     cursor: pointer;
 }
