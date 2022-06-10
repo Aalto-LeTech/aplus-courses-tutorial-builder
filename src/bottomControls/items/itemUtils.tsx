@@ -15,6 +15,7 @@ export type InputProps<T, E> = {
 
 export type TextInputProps<InputElement> = InputProps<string, InputElement> & {
     placeholder: string;
+    onSubmit: () => void;
     unsavedChanges: boolean;
     setUnsavedChanges: (isUnsaved: boolean) => void;
 };
@@ -30,7 +31,8 @@ const useInput = <T,>(defaultValue: T) => {
 };
 
 export const useTextInput = (
-    placeholder: string
+    placeholder: string,
+    onSubmitCallback: (value: string) => void
 ): TextInputProps<InputElement> => {
     const { value, setValue, uuid } = useInput('');
     const [unsavedChanges, setUnsavedChanges] = React.useState(false);
@@ -38,10 +40,15 @@ export const useTextInput = (
         setValue(e.target.value);
         setUnsavedChanges(true);
     };
+    const onSubmit = () => {
+        onSubmitCallback(value);
+        setUnsavedChanges(false);
+    };
     return {
         value,
         setValue,
         onChange,
+        onSubmit,
         placeholder,
         unsavedChanges,
         setUnsavedChanges,
@@ -66,10 +73,13 @@ export const useBooleanInput = (
     };
 };
 
-export const useSelectInput = (): SelectInputProps => {
+export const useSelectInput = (
+    onChangeCallback: (value: string) => void = () => {}
+): SelectInputProps => {
     const { value, setValue, uuid } = useInput('');
     const onChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
         setValue(e.target.value);
+        onChangeCallback(e.target.value);
     };
     return {
         value,
@@ -88,6 +98,11 @@ export const TextInput: React.FC<TextInputProps<HTMLInputElement>> = (
             id={props.uuid}
             value={props.value}
             onChange={props.onChange}
+            onKeyDown={(ev) => {
+                if (ev.code === 'Enter') {
+                    props.onSubmit();
+                }
+            }}
             placeholder={props.placeholder}
         />
     );
@@ -100,6 +115,11 @@ export const TextAreaInput: React.FC<TextInputProps<HTMLTextAreaElement>> = (
         <textarea
             value={props.value}
             onChange={props.onChange}
+            onKeyDown={(ev) => {
+                if (ev.code === 'Enter' && ev.ctrlKey) {
+                    props.onSubmit();
+                }
+            }}
             placeholder={props.placeholder}
         />
     );

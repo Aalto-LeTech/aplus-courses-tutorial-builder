@@ -14,20 +14,9 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
     selectedTutorial,
     updateSelectedTutorial,
 }) => {
-    const tutorialNameInput = useTextInput('Exercise ID');
-    const addDependencyInput = useTextInput('Module name');
-
-    useGranularEffect(
-        () => {
-            tutorialNameInput.setValue(selectedTutorial?.name ?? '');
-        },
-        [selectedTutorial],
-        [tutorialNameInput]
-    );
-
-    const handleChangeTutorialName = () => {
+    const handleChangeTutorialName = (newName: string) => {
         if (!selectedTutorial) return;
-        selectedTutorial.name = tutorialNameInput.value.trim();
+        selectedTutorial.name = newName.trim();
         updateSelectedTutorial(selectedTutorial);
     };
     const handleAddDependency = (newDependency: string) => {
@@ -47,6 +36,20 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
         updateSelectedTutorial(selectedTutorial);
     };
 
+    const tutorialNameInput = useTextInput(
+        'Exercise ID',
+        handleChangeTutorialName
+    );
+    const addDependencyInput = useTextInput('Module name', handleAddDependency);
+
+    useGranularEffect(
+        () => {
+            tutorialNameInput.setValue(selectedTutorial?.name ?? '');
+        },
+        [selectedTutorial],
+        [tutorialNameInput]
+    );
+
     return (
         <>
             {selectedTutorial && (
@@ -58,7 +61,6 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
                         title="Tutorial name (Exercise ID)"
                         info="The JSON key of the tutorial"
                         inputProps={tutorialNameInput}
-                        onSubmit={handleChangeTutorialName}
                     />
                     <TextInputListItem
                         title="Module dependencies"
@@ -66,7 +68,6 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
                         inputProps={addDependencyInput}
                         listItems={selectedTutorial.moduleDependencies}
                         onRemoveClick={handleRemoveDependency}
-                        onAddClick={handleAddDependency}
                         onSaveClick={handleDependencyChange}
                     />
                 </div>

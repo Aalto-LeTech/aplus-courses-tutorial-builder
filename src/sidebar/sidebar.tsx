@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     }, [setTutorials]);
 
     const newTask = React.useCallback(() => {
-        const action = Actions.get('openEditor');
+        const action = Actions.openEditor;
         if (!selectedTutorial || !action) return;
         const newTask: Task = {
             action: action,
@@ -104,6 +104,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         setPrevTutorialsLength,
     ]);
 
+    const tutorialToString = (tutorial: Tutorial) => {
+        let text = `${tutorial.name}${
+            tutorial.moduleDependencies.length > 0 ? ': ' : ''
+        }${tutorial.moduleDependencies.join(', ')}`;
+        if (text.length > 20) text = text.substring(0, 20) + '...';
+        return text;
+    };
+
     return (
         <div className="rounded-item" id="sidebar">
             <div id="sidebar-top">
@@ -122,7 +130,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             {Array.from(tutorials.entries()).map(
                                 ([index, tutorial]) => (
                                     <option key={index} value={index}>
-                                        {tutorial.name}
+                                        {tutorialToString(tutorial)}
                                     </option>
                                 )
                             )}

@@ -21,6 +21,12 @@ function App() {
     >([]);
 
     React.useEffect(() => {
+        if (!selectedTask || !selectedTutorial) return;
+        if (!selectedTutorial.tasks.includes(selectedTask))
+            setSelectedControl(Control.TutorialSettings);
+    }, [selectedTutorial, selectedTask, setSelectedControl]);
+
+    React.useEffect(() => {
         if (!selectedTask) {
             setHighlightedComponents([]);
             return;

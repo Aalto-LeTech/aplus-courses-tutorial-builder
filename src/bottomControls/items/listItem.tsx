@@ -25,7 +25,6 @@ type ListItemPropsChildren = ListItemProps & {
 
 export type TextInputListItemProps = ListItemProps & {
     inputProps: TextInputProps<HTMLInputElement>;
-    onAddClick: (value: string) => void;
     onSaveClick: (index: number, value: string) => void;
 };
 
@@ -66,7 +65,6 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
     title,
     info,
     inputProps,
-    onAddClick,
     onRemoveClick,
     onSaveClick,
     listItems,
@@ -90,9 +88,8 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
                 <TextInput {...inputProps} />
                 <button
                     onClick={() => {
-                        onAddClick(inputProps.value);
+                        inputProps.onSubmit();
                         inputProps.setValue('');
-                        inputProps.setUnsavedChanges(false);
                     }}
                 >
                     Add
@@ -115,7 +112,11 @@ const EditableListItem: React.FC<EditableListItemProps> = ({
     onSaveClick,
     onRemoveClick,
 }) => {
-    const inputProps = useTextInput('Value');
+    const handleOnSubmit = React.useCallback(
+        (value: string) => onSaveClick(index, value),
+        [onSaveClick, index]
+    );
+    const inputProps = useTextInput('Value', handleOnSubmit);
     useGranularEffect(
         () => {
             inputProps.setValue(defaultValue);

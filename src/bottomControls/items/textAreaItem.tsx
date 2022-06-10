@@ -4,14 +4,9 @@ import { TextAreaInput, TextInputProps } from './itemUtils';
 type TextAreaItemProps = {
     title: string;
     inputProps: TextInputProps<HTMLTextAreaElement>;
-    onSubmit: () => void;
 };
 
-const TextAreaItem: React.FC<TextAreaItemProps> = ({
-    title,
-    inputProps,
-    onSubmit,
-}) => {
+const TextAreaItem: React.FC<TextAreaItemProps> = ({ title, inputProps }) => {
     return (
         <form
             className={`bottom-item ${
@@ -19,8 +14,7 @@ const TextAreaItem: React.FC<TextAreaItemProps> = ({
             }`}
             onSubmit={(e) => {
                 e.preventDefault();
-                onSubmit();
-                inputProps.setUnsavedChanges(false);
+                inputProps.onSubmit();
             }}
         >
             <label>

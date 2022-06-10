@@ -53,11 +53,16 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                 break;
         }
     }
-    const textInputProps = useTextInput(
+    const placeholder =
         argumentInfo.type === ArgumentType.StringArray
             ? 'New argument'
-            : 'Argument'
-    );
+            : 'Argument';
+    const onSubmit =
+        argumentInfo.type === ArgumentType.StringArray
+            ? (value: string) => handleAddListArgument(argumentName, value)
+            : (value: string) => handleSaveTextArgument(argumentName, value);
+    const textInputProps = useTextInput(placeholder, onSubmit);
+
     useGranularEffect(
         () => {
             if (argumentInfo.type === ArgumentType.String)
@@ -124,9 +129,6 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                     title={argumentName}
                     info={argumentInfo.info}
                     inputProps={textInputProps}
-                    onSubmit={(value) =>
-                        handleSaveTextArgument(argumentName, value)
-                    }
                 >
                     {argumentSpecificAddition()}
                 </SingleLineItem>
@@ -139,9 +141,6 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                     info={argumentInfo.info}
                     listItems={args}
                     inputProps={textInputProps}
-                    onAddClick={(value) =>
-                        handleAddListArgument(argumentName, value)
-                    }
                     onRemoveClick={(index) =>
                         handleRemoveListArgument(argumentName, index)
                     }

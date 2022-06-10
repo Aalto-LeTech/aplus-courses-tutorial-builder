@@ -22,54 +22,66 @@ export class Action {
     }
 }
 
-const actions: Action[] = [
-    new Action('openEditor', 'Open a file', ActionArgumentFields.openEditor),
-    new Action('build', 'Build a module', ActionArgumentFields.build),
-    new Action(
+export const Actions = {
+    openEditor: new Action(
+        'openEditor',
+        'Open a file',
+        ActionArgumentFields.openEditor
+    ),
+    build: new Action('build', 'Build a module', ActionArgumentFields.build),
+    comment: new Action(
         'comment',
         'Comment out a line of code',
         ActionArgumentFields.comment
     ),
-    new Action('run', 'Run a program', ActionArgumentFields.run),
-    new Action('null', 'Free-range task', ActionArgumentFields.null),
-    new Action('openRepl', 'Open REPL', ActionArgumentFields.openRepl),
-    new Action('replInput', 'REPL input', ActionArgumentFields.replInput),
-    new Action(
+    run: new Action('run', 'Run a program', ActionArgumentFields.run),
+    null: new Action('null', 'Free-range task', ActionArgumentFields.null),
+    openRepl: new Action(
+        'openRepl',
+        'Open REPL',
+        ActionArgumentFields.openRepl
+    ),
+    replInput: new Action(
+        'replInput',
+        'REPL input',
+        ActionArgumentFields.replInput
+    ),
+    replInputContains: new Action(
         'replInputContains',
         'REPL input with includes check',
         ActionArgumentFields.replInputContains
     ),
-    new Action(
+    declareVariable: new Action(
         'declareVariable',
         'Variable declaration',
         ActionArgumentFields.declareVariable
     ),
-    new Action(
+    assignStatement: new Action(
         'assignStatement',
         'Assign statement',
         ActionArgumentFields.assignStatement
     ),
-    new Action(
+    classDeclScala: new Action(
         'classDeclScala',
         'Class declaration',
         ActionArgumentFields.classDeclScala
     ),
-    new Action(
+    functionDefinition: new Action(
         'functionDefinition',
         'Function definition',
         ActionArgumentFields.functionDefinition
     ),
-    new Action('methodCall', 'Method call', ActionArgumentFields.methodCall),
-    new Action(
+    methodCall: new Action(
+        'methodCall',
+        'Method call',
+        ActionArgumentFields.methodCall
+    ),
+    stop: new Action(
         'stop',
         'Close a running application',
         ActionArgumentFields.stop
     ),
-];
-
-export const Actions: Map<string, Action> = new Map(
-    actions.map((action) => [action.command, action])
-);
+};
 
 export type Tutorial = {
     name: string;
@@ -81,7 +93,7 @@ export type Task = {
     instruction: string;
     info: string;
     component: string[];
-    assertClosed: string[] | undefined;
+    assertClosed: string[];
     freeRange: boolean;
     action: Action;
     actionArguments: any;

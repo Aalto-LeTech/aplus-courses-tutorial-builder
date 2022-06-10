@@ -25,6 +25,11 @@
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+    position: sticky;
+    bottom: -5px;
+    background-color: var(--background);
+    padding: 10px;
+    border-top: 1px solid var(--border);
 }
 
 #new-task,

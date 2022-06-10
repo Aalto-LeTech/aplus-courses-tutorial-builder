@@ -31,7 +31,8 @@ export const getTutorialsFromJson = (jsonString: string): Tutorial[] => {
             } else {
                 task.component = [task.component];
             }
-            task.action = Actions.get(task.action);
+            if (task.assertClosed === undefined) task.assertClosed = [];
+            task.action = (Actions as any)[task.action];
         }
         const tasks: Task[] = jsonTasks;
         tutorials.push({ name, moduleDependencies, tasks });

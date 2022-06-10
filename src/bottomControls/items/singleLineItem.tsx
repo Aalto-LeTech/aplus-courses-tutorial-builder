@@ -6,7 +6,6 @@ type SingleLineItemProps = {
     title: string;
     info: string;
     inputProps: TextInputProps<HTMLInputElement>;
-    onSubmit: (value: string) => void;
     children?: JSX.Element;
 };
 
@@ -14,7 +13,6 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
     title,
     info,
     inputProps,
-    onSubmit,
     children,
 }) => {
     return (
@@ -22,7 +20,7 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    onSubmit(inputProps.value);
+                    inputProps.onSubmit();
                     inputProps.setUnsavedChanges(false);
                 }}
                 className="list-item"

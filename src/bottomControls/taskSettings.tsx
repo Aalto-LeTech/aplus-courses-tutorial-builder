@@ -1,5 +1,5 @@
 import React from 'react';
-import { Actions, Components, Task, Tutorial } from '../tutorial/types';
+import { Action, Actions, Components, Task, Tutorial } from '../tutorial/types';
 import {
     useBooleanInput,
     useSelectInput,
@@ -31,90 +31,82 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     selectedFilePath,
     setSelectedFilePath,
 }) => {
-    const instructionInput = useTextInput('Instructions for the task');
-    const infoInput = useTextInput('Extra info for the task');
-    const componentInput = useSelectInput();
-    const actionInput = useTextInput('Action');
-
     const index =
         selectedTutorial !== null && selectedTask !== null
             ? selectedTutorial.tasks.indexOf(selectedTask) + 1
             : -1;
 
-    const handleUpdateAction = React.useCallback(() => {
-        if (selectedTask === null || actionInput.value === '') return;
-        const newAction = Actions.get(actionInput.value);
-        if (!newAction) return;
-        selectedTask.action = newAction;
-        updateSelectedTask(selectedTask);
-    }, [selectedTask, actionInput, updateSelectedTask]);
-
-    const handleInstructionSubmit = React.useCallback(() => {
-        if (selectedTask === null || instructionInput.value === '') return;
-        selectedTask.instruction = instructionInput.value;
-        updateSelectedTask(selectedTask);
-    }, [selectedTask, instructionInput, updateSelectedTask]);
-
-    const handleInfoSubmit = React.useCallback(() => {
-        if (selectedTask === null || infoInput.value === '') return;
-        selectedTask.info = infoInput.value;
-        updateSelectedTask(selectedTask);
-    }, [selectedTask, updateSelectedTask, infoInput]);
-
-    const handleAddComponent = React.useCallback(
+    const handleUpdateAction = React.useCallback(
         (value: string) => {
-            if (selectedTask === null || value.trim() === '') return;
-            selectedTask.component = Array.from(
-                new Set([...selectedTask.component, value.trim()])
-            );
+            if (selectedTask === null || value === '') return;
+            const newAction = (Actions as any)[value];
+            if (!newAction) return;
+            selectedTask.action = newAction as Action;
             updateSelectedTask(selectedTask);
         },
         [selectedTask, updateSelectedTask]
     );
 
-    const handleRemoveComponent = React.useCallback(
-        (index: number) => {
-            if (selectedTask === null || componentInput.value === '') return;
-            selectedTask.component.splice(index, 1);
-            updateSelectedTask(selectedTask);
-        },
-        [selectedTask, updateSelectedTask, componentInput]
-    );
-
     const handleAddListArgument = React.useCallback(
-        (argumentName: string, value: string) => {
+        (
+            fieldName: string,
+            value: string,
+            isActionArgument: boolean = true
+        ) => {
             if (selectedTask === null || value.trim() === '') return;
-            selectedTask.actionArguments[argumentName] = [
-                ...(selectedTask.actionArguments[argumentName] ?? []),
-                value,
-            ];
+            const oldArray =
+                (isActionArgument
+                    ? selectedTask.actionArguments[fieldName]
+                    : (selectedTask as any)[fieldName]) ?? [];
+            const updatedArray = [...oldArray, value];
+            if (isActionArgument) {
+                selectedTask.actionArguments[fieldName] = updatedArray;
+            } else {
+                (selectedTask as any)[fieldName] = updatedArray;
+            }
+
             updateSelectedTask(selectedTask);
         },
         [selectedTask, updateSelectedTask]
     );
 
     const handleRemoveListArgument = React.useCallback(
-        (argumentName: string, index: number) => {
-            if (selectedTask === null || componentInput.value === '') return;
-            selectedTask.actionArguments[argumentName].splice(index, 1);
+        (
+            fieldName: string,
+            index: number,
+            isActionArgument: boolean = true
+        ) => {
+            if (selectedTask === null) return;
+            (isActionArgument
+                ? selectedTask.actionArguments[fieldName]
+                : (selectedTask as any)[fieldName]
+            ).splice(index, 1);
             updateSelectedTask(selectedTask);
         },
-        [selectedTask, updateSelectedTask, componentInput]
+        [selectedTask, updateSelectedTask]
     );
 
     const handleSaveListArgumentItem = React.useCallback(
         (argumentName: string, index: number, value: string) => {
-            if (selectedTask === null || componentInput.value === '') return;
+            if (selectedTask === null || value === '') return;
             selectedTask.actionArguments[argumentName][index] = value;
             updateSelectedTask(selectedTask);
         },
-        [selectedTask, updateSelectedTask, componentInput]
+        [selectedTask, updateSelectedTask]
     );
 
     const handleSaveTextArgument = React.useCallback(
-        (argumentName: string, value: string) => {
+        (
+            fieldName: string,
+            value: string,
+            isActionArgument: boolean = true
+        ) => {
             if (selectedTask === null) return;
-            selectedTask.actionArguments[argumentName] = value;
+            if (isActionArgument) {
+                selectedTask.actionArguments[fieldName] = value;
+            } else {
+                (selectedTask as any)[fieldName] = value;
+            }
             updateSelectedTask(selectedTask);
         },
         [selectedTask, updateSelectedTask]
@@ -129,15 +121,30 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
         [selectedTask, updateSelectedTask]
     );
 
+    const actionInput = useSelectInput(handleUpdateAction);
+
     const handleFreeRangeChange = React.useCallback(
         (isFreeRange: boolean) => {
             if (selectedTask === null) return;
             selectedTask.freeRange = isFreeRange;
+            if (isFreeRange) {
+                selectedTask.action = Actions.null;
+                actionInput.setValue('null');
+            }
             updateSelectedTask(selectedTask);
         },
-        [selectedTask, updateSelectedTask]
+        [selectedTask, updateSelectedTask, actionInput]
     );
 
+    const instructionInput = useTextInput(
+        'Instructions for the task',
+        (value) => handleSaveTextArgument('instruction', value, false)
+    );
+    const infoInput = useTextInput('Extra info for the task', (value) =>
+        handleSaveTextArgument('info', value, false)
+    );
+    const componentInput = useSelectInput();
+    const assertClosedInput = useSelectInput();
     const freeRangeInput = useBooleanInput(false, handleFreeRangeChange);
 
     useGranularEffect(
@@ -166,23 +173,40 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                     Toggle Fullscreen
                 </button>
             </div>
-            <TextAreaItem
-                title="Instruction"
-                inputProps={instructionInput}
-                onSubmit={handleInstructionSubmit}
-            />
-            <TextAreaItem
-                title="Info"
-                inputProps={infoInput}
-                onSubmit={handleInfoSubmit}
-            />
+            <TextAreaItem title="Instruction" inputProps={instructionInput} />
+            <TextAreaItem title="Info" inputProps={infoInput} />
             <SelectorListItem
                 title="Highlighted components"
                 info=""
+                key="highlighted"
                 inputProps={componentInput}
-                onAddClick={handleAddComponent}
-                onRemoveClick={handleRemoveComponent}
+                onAddClick={(value) =>
+                    handleAddListArgument('component', value, false)
+                }
+                onRemoveClick={(index) =>
+                    handleRemoveListArgument('component', index, false)
+                }
                 listItems={selectedTask?.component.map((component) =>
+                    component.toString()
+                )}
+                selectorItems={
+                    new Map(
+                        Components.map((component) => [component, component])
+                    )
+                }
+            />
+            <SelectorListItem
+                title="Assert closed"
+                info="This field can be used to make sure that a component is closed before the beginning of a Task"
+                key="assertClosed"
+                inputProps={assertClosedInput}
+                onAddClick={(value) =>
+                    handleAddListArgument('assertClosed', value, false)
+                }
+                onRemoveClick={(index) =>
+                    handleRemoveListArgument('assertClosed', index, false)
+                }
+                listItems={selectedTask?.assertClosed.map((component) =>
                     component.toString()
                 )}
                 selectorItems={
@@ -200,15 +224,16 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
             <SelectorItem
                 title="Action"
                 inputProps={actionInput}
-                onSubmit={handleUpdateAction}
+                onSubmit={() => {}}
                 items={
                     new Map(
-                        Array.from(Actions.values()).map((action) => [
+                        Object.values(Actions).map((action) => [
                             action.command,
                             `${action.command}: ${action.description}`,
                         ])
                     )
                 }
+                hasSaveButton={false}
             />
             {Array.from(selectedTask.action.fields.entries()).map(
                 ([fieldName, fieldInfo]) => (
