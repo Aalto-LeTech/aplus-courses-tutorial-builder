@@ -10,11 +10,11 @@ const EmptyControl: React.FC<EmptyControlProps> = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '100%',
+                    height: '100%',
                 }}
             >
                 <img
-                    src={process.env.PUBLIC_URL + '/banner.png'}
+                    src={process.env.PUBLIC_URL + '/banner-side.png'}
                     style={{ height: '100%', width: 'auto' }}
                     alt="A+ Courses Tutorial Builder"
                 />

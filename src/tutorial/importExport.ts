@@ -34,7 +34,7 @@ export const getTutorialsFromJson = (jsonString: string): Tutorial[] => {
                 task.component = [task.component];
             }
             // Make assertClosed array if undefined
-            if (task.assertClosed === undefined) task.assertClosed = [];
+            if (!Array.isArray(task.assertClosed)) task.assertClosed = [];
             // Get more action info based on action name
             task.action = (Actions as any)[task.action];
         }

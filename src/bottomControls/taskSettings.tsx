@@ -20,6 +20,7 @@ type TaskSettingsProps = {
     setFullscreen: (fullscreen: boolean) => void;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
+    removeSelectedTask: () => void;
 };
 
 const TaskSettings: React.FC<TaskSettingsProps> = ({
@@ -30,6 +31,7 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     setFullscreen,
     selectedFilePath,
     setSelectedFilePath,
+    removeSelectedTask,
 }) => {
     const index =
         selectedTutorial !== null && selectedTask !== null
@@ -171,6 +173,14 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                 <h1 id="task-settings-title">Task {index} settings</h1>
                 <button onClick={() => setFullscreen(!fullscreen)}>
                     Toggle Fullscreen
+                </button>
+                <button
+                    onClick={() => {
+                        if (window.confirm('Remove this task?'))
+                            removeSelectedTask();
+                    }}
+                >
+                    Remove Task
                 </button>
             </div>
             <TextAreaItem title="Instruction" inputProps={instructionInput} />

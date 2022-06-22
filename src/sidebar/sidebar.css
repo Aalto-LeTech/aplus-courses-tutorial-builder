@@ -1,7 +1,7 @@
 #sidebar {
     overflow: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin: 5px;
     padding: 5px;
     user-select: none;
@@ -10,8 +10,9 @@
 #sidebar-top {
     padding: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 #sidebar-top > div {
@@ -26,10 +27,14 @@
     align-items: center;
     column-gap: 10px;
     position: sticky;
-    bottom: -5px;
+    right: -5px;
     background-color: var(--background);
     padding: 10px;
-    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+#tutorial-steps {
+    display: flex;
 }
 
 #new-task,
@@ -48,15 +53,18 @@
     padding: 10px;
     cursor: pointer;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .task {
     display: flex;
+    min-width: 100px;
 }
 
 .task-index {
     background-color: var(--background-darker);
-    margin: -10px 10px -10px -10px;
+    margin: -10px -10px 10px -10px;
     padding: 10px;
-    border-radius: 15px 0 0 15px;
+    border-radius: 15px 15px 0 0;
 }

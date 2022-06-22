@@ -144,18 +144,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
                 )}
                 <button onClick={() => newTutorial()}>New Tutorial</button>
-            </div>
-            {tutorials.length > 0 && selectedTutorial !== null && (
-                <>
-                    <div
-                        className="sidebar-item rounded-item"
+                {tutorials.length > 0 && selectedTutorial !== null && (
+                    <button
                         id="tutorial-settings-button"
                         onClick={() =>
                             setSelectedControl(Control.TutorialSettings)
                         }
                     >
                         Tutorial settings
-                    </div>
+                    </button>
+                )}
+            </div>
+            {tutorials.length > 0 && selectedTutorial !== null && (
+                <>
                     <div id="tutorial-steps">
                         {selectedTutorial.tasks.map((task) => (
                             <TaskButton

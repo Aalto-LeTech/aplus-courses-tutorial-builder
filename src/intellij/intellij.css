@@ -10,6 +10,11 @@
     grid-template-rows: 30px 24px 3fr 1fr 24px 24px;
     grid-template-columns: 24px 1fr 4fr 1fr 24px;
 
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
     padding: 10px;
 }
 
@@ -177,8 +182,8 @@ summary {
 #intellij-hide-overlay {
     z-index: 3;
     position: absolute;
-    right: 10px;
-    top: 5px;
+    right: 360px;
+    top: 256px;
 }
 
 #module-picker-label {

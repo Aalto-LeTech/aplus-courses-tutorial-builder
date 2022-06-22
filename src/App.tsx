@@ -33,6 +33,7 @@ function App() {
         ) {
             setTutorials(getTutorialsFromJson(tutorialJson));
         }
+        // eslint-disable-next-line
     }, []);
 
     useInterval(() => {
@@ -91,8 +92,25 @@ function App() {
         [selectedTutorial, selectedTask, updateSelectedTutorial]
     );
 
+    const removeSelectedTask = React.useCallback(() => {
+        if (!selectedTutorial || !selectedTask) return;
+        const selectedTaskIndex = selectedTutorial.tasks.indexOf(selectedTask);
+        const tasksCount = selectedTutorial.tasks.length;
+        selectedTutorial.tasks.splice(selectedTaskIndex, 1);
+        updateSelectedTutorial(selectedTutorial);
+        if (tasksCount === 1) {
+            setSelectedTask(null);
+        } else {
+            const previousTaskIndex = Math.max(0, selectedTaskIndex - 1);
+            setSelectedTask(selectedTutorial.tasks[previousTaskIndex]);
+        }
+    }, [selectedTutorial, selectedTask, updateSelectedTutorial]);
+
     return (
-        <div id="container">
+        <div
+            id="container"
+            className={`${selectedControl === Control.Empty ? 'welcome' : ''}`}
+        >
             <Export
                 tutorials={tutorials}
                 visible={exportVisible}
@@ -124,6 +142,7 @@ function App() {
                 updateSelectedTask={updateSelectedTask}
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
+                removeSelectedTask={removeSelectedTask}
             />
         </div>
     );
