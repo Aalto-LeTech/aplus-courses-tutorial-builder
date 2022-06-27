@@ -85,16 +85,14 @@ button:hover,
     background-color: var(--button-background-hover) !important;
 }
 
-.rounded-item,
-.bottom-item {
+.rounded-item {
     border-radius: 15px;
     box-shadow: 0 0 5px 1px #0004;
     background-color: var(--background);
 }
 
 @media (prefers-color-scheme: dark) {
-    .rounded-item,
-    .bottom-item {
+    .rounded-item {
         box-shadow: 0 0 5px 1px #000a;
     }
 }
@@ -149,4 +147,9 @@ textarea {
 
 .flex-grow {
     flex-grow: 1;
+}
+
+summary {
+    user-select: none;
+    cursor: pointer;
 }

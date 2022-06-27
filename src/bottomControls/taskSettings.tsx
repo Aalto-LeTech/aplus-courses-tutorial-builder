@@ -183,87 +183,105 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                     Remove Task
                 </button>
             </div>
-            <TextAreaItem title="Instruction" inputProps={instructionInput} />
-            <TextAreaItem title="Info" inputProps={infoInput} />
-            <SelectorListItem
-                title="Highlighted components"
-                info=""
-                key="highlighted"
-                inputProps={componentInput}
-                onAddClick={(value) =>
-                    handleAddListArgument('component', value, false)
-                }
-                onRemoveClick={(index) =>
-                    handleRemoveListArgument('component', index, false)
-                }
-                listItems={selectedTask?.component.map((component) =>
-                    component.toString()
+            <details open>
+                <summary>Base Settings</summary>
+                <TextAreaItem
+                    title="Instruction"
+                    inputProps={instructionInput}
+                />
+                <TextAreaItem title="Info" inputProps={infoInput} />
+                <SelectorListItem
+                    title="Highlighted components"
+                    info=""
+                    key="highlighted"
+                    inputProps={componentInput}
+                    onAddClick={(value) =>
+                        handleAddListArgument('component', value, false)
+                    }
+                    onRemoveClick={(index) =>
+                        handleRemoveListArgument('component', index, false)
+                    }
+                    listItems={selectedTask?.component.map((component) =>
+                        component.toString()
+                    )}
+                    selectorItems={
+                        new Map(
+                            Components.map((component) => [
+                                component,
+                                component,
+                            ])
+                        )
+                    }
+                />
+                <SelectorListItem
+                    title="Assert closed"
+                    info="This field can be used to make sure that a component is closed before the beginning of a Task"
+                    key="assertClosed"
+                    inputProps={assertClosedInput}
+                    onAddClick={(value) =>
+                        handleAddListArgument('assertClosed', value, false)
+                    }
+                    onRemoveClick={(index) =>
+                        handleRemoveListArgument('assertClosed', index, false)
+                    }
+                    listItems={selectedTask?.assertClosed.map((component) =>
+                        component.toString()
+                    )}
+                    selectorItems={
+                        new Map(
+                            Components.map((component) => [
+                                component,
+                                component,
+                            ])
+                        )
+                    }
+                />
+                <hr style={{ width: '100%' }} />
+            </details>
+            <details open>
+                <summary>Action Settings</summary>
+                <BooleanItem
+                    key={`${index}-freerange`}
+                    title="Free range"
+                    info="By setting this to true, this Task will not have listeners registered and instead, there will be a button available that the students will click to signal that they are done with the described Task."
+                    inputProps={freeRangeInput}
+                />
+                <SelectorItem
+                    title="Action"
+                    inputProps={actionInput}
+                    onSubmit={() => {}}
+                    items={
+                        new Map(
+                            Object.values(Actions).map((action) => [
+                                action.command,
+                                `${action.command}: ${action.description}`,
+                            ])
+                        )
+                    }
+                    hasSaveButton={false}
+                />
+                {Array.from(selectedTask.action.fields.entries()).map(
+                    ([fieldName, fieldInfo]) => (
+                        <ActionArgumentItem
+                            key={`${index}-${fieldName}`}
+                            selectedTask={selectedTask}
+                            argumentName={fieldName}
+                            argumentInfo={fieldInfo}
+                            handleAddListArgument={handleAddListArgument}
+                            handleRemoveListArgument={handleRemoveListArgument}
+                            handleSaveListArgumentItem={
+                                handleSaveListArgumentItem
+                            }
+                            handleSaveTextArgument={handleSaveTextArgument}
+                            handleChangeBooleanArgument={
+                                handleChangeBooleanArgument
+                            }
+                            selectedFilePath={selectedFilePath}
+                            setSelectedFilePath={setSelectedFilePath}
+                        />
+                    )
                 )}
-                selectorItems={
-                    new Map(
-                        Components.map((component) => [component, component])
-                    )
-                }
-            />
-            <SelectorListItem
-                title="Assert closed"
-                info="This field can be used to make sure that a component is closed before the beginning of a Task"
-                key="assertClosed"
-                inputProps={assertClosedInput}
-                onAddClick={(value) =>
-                    handleAddListArgument('assertClosed', value, false)
-                }
-                onRemoveClick={(index) =>
-                    handleRemoveListArgument('assertClosed', index, false)
-                }
-                listItems={selectedTask?.assertClosed.map((component) =>
-                    component.toString()
-                )}
-                selectorItems={
-                    new Map(
-                        Components.map((component) => [component, component])
-                    )
-                }
-            />
-            <BooleanItem
-                key={`${index}-freerange`}
-                title="Free range"
-                info="By setting this to true, this Task will not have listeners registered and instead, there will be a button available that the students will click to signal that they are done with the described Task."
-                inputProps={freeRangeInput}
-            />
-            <SelectorItem
-                title="Action"
-                inputProps={actionInput}
-                onSubmit={() => {}}
-                items={
-                    new Map(
-                        Object.values(Actions).map((action) => [
-                            action.command,
-                            `${action.command}: ${action.description}`,
-                        ])
-                    )
-                }
-                hasSaveButton={false}
-            />
-            {Array.from(selectedTask.action.fields.entries()).map(
-                ([fieldName, fieldInfo]) => (
-                    <ActionArgumentItem
-                        key={`${index}-${fieldName}`}
-                        selectedTask={selectedTask}
-                        argumentName={fieldName}
-                        argumentInfo={fieldInfo}
-                        handleAddListArgument={handleAddListArgument}
-                        handleRemoveListArgument={handleRemoveListArgument}
-                        handleSaveListArgumentItem={handleSaveListArgumentItem}
-                        handleSaveTextArgument={handleSaveTextArgument}
-                        handleChangeBooleanArgument={
-                            handleChangeBooleanArgument
-                        }
-                        selectedFilePath={selectedFilePath}
-                        setSelectedFilePath={setSelectedFilePath}
-                    />
-                )
-            )}
+            </details>
         </div>
     );
 };

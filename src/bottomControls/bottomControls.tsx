@@ -21,6 +21,7 @@ type BottomControlsProps = {
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
     removeSelectedTask: () => void;
+    removeSelectedTutorial: () => void;
 };
 
 const BottomControls: React.FC<BottomControlsProps> = ({
@@ -32,6 +33,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
     selectedFilePath,
     setSelectedFilePath,
     removeSelectedTask,
+    removeSelectedTutorial,
 }) => {
     const [fullscreen, setFullscreen] = useState(false);
     return (
@@ -63,6 +65,7 @@ const BottomControls: React.FC<BottomControlsProps> = ({
                     <TutorialSettings
                         selectedTutorial={selectedTutorial}
                         updateSelectedTutorial={updateSelectedTutorial}
+                        removeSelectedTutorial={removeSelectedTutorial}
                     />
                 ) : (
                     <EmptyControl />

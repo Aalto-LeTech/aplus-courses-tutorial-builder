@@ -93,18 +93,49 @@ function App() {
     );
 
     const removeSelectedTask = React.useCallback(() => {
-        if (!selectedTutorial || !selectedTask) return;
-        const selectedTaskIndex = selectedTutorial.tasks.indexOf(selectedTask);
-        const tasksCount = selectedTutorial.tasks.length;
-        selectedTutorial.tasks.splice(selectedTaskIndex, 1);
-        updateSelectedTutorial(selectedTutorial);
-        if (tasksCount === 1) {
-            setSelectedTask(null);
-        } else {
-            const previousTaskIndex = Math.max(0, selectedTaskIndex - 1);
-            setSelectedTask(selectedTutorial.tasks[previousTaskIndex]);
-        }
+        selectedTutorial &&
+            removeSelectedItem(
+                selectedTask,
+                selectedTutorial.tasks,
+                setSelectedTask,
+                selectedTutorial,
+                updateSelectedTutorial,
+                Control.TutorialSettings
+            );
     }, [selectedTutorial, selectedTask, updateSelectedTutorial]);
+
+    const removeSelectedTutorial = React.useCallback(() => {
+        removeSelectedItem(
+            selectedTutorial,
+            tutorials,
+            setSelectedTutorial,
+            tutorials,
+            setTutorials,
+            Control.Empty
+        );
+    }, [tutorials, selectedTutorial, setSelectedTutorial]);
+
+    const removeSelectedItem = <T, P>(
+        selectedItem: T | null,
+        items: T[],
+        setSelectedItem: (item: T | null) => void,
+        parent: P,
+        updateParent: (parent: P) => void,
+        defaultControl: Control
+    ) => {
+        if (!selectedItem) return;
+        const selectedItemIndex = items.indexOf(selectedItem);
+        const itemsCount = items.length;
+        items.splice(selectedItemIndex, 1);
+        updateParent(parent);
+        if (itemsCount === 1) {
+            setSelectedItem(null);
+            setSelectedControl(defaultControl);
+        } else {
+            const previousItemIndex = Math.max(0, selectedItemIndex - 1);
+            setSelectedItem(items[previousItemIndex]);
+        }
+    };
 
     return (
         <div
@@ -143,6 +174,7 @@ function App() {
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
                 removeSelectedTask={removeSelectedTask}
+                removeSelectedTutorial={removeSelectedTutorial}
             />
         </div>
     );

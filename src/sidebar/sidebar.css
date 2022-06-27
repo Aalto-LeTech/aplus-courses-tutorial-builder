@@ -59,7 +59,8 @@
 
 .task {
     display: flex;
-    min-width: 100px;
+    width: 150px;
+    overflow: hidden;
 }
 
 .task-index {

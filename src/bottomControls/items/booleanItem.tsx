@@ -14,15 +14,16 @@ const BooleanItem: React.FC<BooleanItemProps> = ({
 }) => {
     return (
         <div className="bottom-item">
-            <label>
+            <label htmlFor={inputProps.uuid}>
                 <h2>{title}</h2>
+                <div>{info}</div>
             </label>
-            <div>{info}</div>
             <label className="toggler-wrapper center">
                 <input
                     type="checkbox"
                     checked={inputProps.value}
                     onChange={inputProps.onChange}
+                    id={inputProps.uuid}
                 />
                 <div className="toggler-slider">
                     <div className="toggler-knob"></div>

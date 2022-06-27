@@ -29,7 +29,14 @@ const TaskButton: React.FC<TaskButtonProps> = ({
                     <div className="task-index">
                         {selectedTutorial.tasks.indexOf(task) + 1}
                     </div>
-                    <div>{task.instruction}</div>
+                    <div
+                        style={{ hyphens: 'auto', overflowWrap: 'break-word' }}
+                    >
+                        <p>
+                            <b>{task.instruction}</b>
+                        </p>
+                        <p>{task.info}</p>
+                    </div>
                 </div>
             )}
         </>

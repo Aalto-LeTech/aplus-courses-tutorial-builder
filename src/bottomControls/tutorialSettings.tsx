@@ -8,11 +8,13 @@ import { useGranularEffect } from 'granular-hooks';
 type TutorialSettingsProps = {
     selectedTutorial: Tutorial | null;
     updateSelectedTutorial: (updatedTutorial: Tutorial) => void;
+    removeSelectedTutorial: () => void;
 };
 
 const TutorialSettings: React.FC<TutorialSettingsProps> = ({
     selectedTutorial,
     updateSelectedTutorial,
+    removeSelectedTutorial,
 }) => {
     const handleChangeTutorialName = (newName: string) => {
         if (!selectedTutorial) return;
@@ -56,6 +58,14 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
                 <div className="bottom-container" id="tutorial-settings">
                     <div className="bottom-item bottom-item-title">
                         <h1>Tutorial {selectedTutorial.name} settings</h1>
+                        <button
+                            onClick={() => {
+                                if (window.confirm('Remove this task?'))
+                                    removeSelectedTutorial();
+                            }}
+                        >
+                            Remove Tutorial
+                        </button>
                     </div>
                     <SingleLineItem
                         title="Tutorial name (Exercise ID)"

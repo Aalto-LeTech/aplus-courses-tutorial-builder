@@ -50,8 +50,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             assertClosed: [],
             component: [],
             freeRange: false,
-            info: '',
-            instruction: 'New task',
+            info: 'Default info',
+            instruction: 'Default instruction',
         };
         selectedTutorial.tasks.push(newTask);
         updateSelectedTutorial(selectedTutorial);
