@@ -1,4 +1,5 @@
 import React from 'react';
+import { Task } from '../tutorial/types';
 import './bottomToolwindow.css';
 import {
     BottomToolWindow,
@@ -14,15 +15,15 @@ type BottomToolwindowCProps = {
     overlay: (component: string) => 'intellij-dark' | '';
     createPopup: () => JSX.Element;
     selectedComponent: string | undefined;
+    selectedTask: Task | null;
 };
 
 const BottomToolwindowC: React.FC<BottomToolwindowCProps> = ({
-    highlightedComponents,
     selectedBottomToolwindow,
-    isOverlay,
     overlay,
     createPopup,
     selectedComponent,
+    selectedTask,
 }) => {
     if (selectedBottomToolwindow === versionControlTW) {
         return (
@@ -40,6 +41,9 @@ const BottomToolwindowC: React.FC<BottomToolwindowCProps> = ({
                 {selectedComponent === 'repl' && createPopup()}
                 <div className="toolwindow-toolbar" id="repl-toolbar">
                     Run: REPL
+                    {selectedTask &&
+                        selectedTask.actionArguments['module'] &&
+                        ` for ${selectedTask.actionArguments['module']}`}
                 </div>
                 <pre id="repl-textarea">
                     <code>test</code>

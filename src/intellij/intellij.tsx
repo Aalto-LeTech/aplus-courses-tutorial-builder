@@ -253,6 +253,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 overlay={overlay}
                 createPopup={createPopup}
                 selectedComponent={selectedComponent}
+                selectedTask={selectedTask}
             />
             <div
                 className={`intellij-whole-width ${darkClass}`}
