@@ -45,6 +45,13 @@ const Export: React.FC<ExportProps> = ({ tutorials, visible, setVisible }) => {
                 id="export-window"
                 onClick={(event) => event.stopPropagation()}
             >
+                <p>
+                    Add this output to the course configuration JSON file.
+                    <br />
+                    <a href="https://github.com/Aalto-LeTech/aplus-courses/wiki/Course-Configuration">
+                        Instructions for creating the file.
+                    </a>
+                </p>
                 <div id="export-buttons">
                     <button onClick={() => saveJson(exportCode)}>Save</button>
                     <button onClick={handleCopyToClipboard}>
