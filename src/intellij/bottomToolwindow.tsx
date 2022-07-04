@@ -1,4 +1,5 @@
 import React from 'react';
+import './bottomToolwindow.css';
 import {
     BottomToolWindow,
     replTW,
@@ -9,45 +10,49 @@ import {
 type BottomToolwindowCProps = {
     highlightedComponents: string[];
     selectedBottomToolwindow: BottomToolWindow | null;
-    repl: React.RefObject<HTMLDivElement>;
     isOverlay: boolean;
     overlay: (component: string) => 'intellij-dark' | '';
+    createPopup: () => JSX.Element;
+    selectedComponent: string | undefined;
 };
 
 const BottomToolwindowC: React.FC<BottomToolwindowCProps> = ({
     highlightedComponents,
     selectedBottomToolwindow,
-    repl,
     isOverlay,
     overlay,
+    createPopup,
+    selectedComponent,
 }) => {
     if (selectedBottomToolwindow === versionControlTW) {
         return (
-            <div
-                ref={repl}
-                className={overlay('git')}
-                id="intellij-toolwindow-bottom"
-            >
+            <div className={overlay('git')} id="intellij-toolwindow-bottom">
+                {selectedComponent === 'git' && createPopup()}
                 Git
             </div>
         );
     } else if (selectedBottomToolwindow === replTW) {
         return (
             <div
-                ref={repl}
-                className={overlay('repl')}
+                className={`${overlay('repl')} repl`}
                 id="intellij-toolwindow-bottom"
             >
-                REPL
+                {selectedComponent === 'repl' && createPopup()}
+                <div className="toolwindow-toolbar" id="repl-toolbar">
+                    Run: REPL
+                </div>
+                <pre id="repl-textarea">
+                    <code>test</code>
+                </pre>
             </div>
         );
     } else if (selectedBottomToolwindow === terminalTW) {
         return (
             <div
-                ref={repl}
                 className={overlay('terminal')}
                 id="intellij-toolwindow-bottom"
             >
+                {selectedComponent === 'terminal' && createPopup()}
                 Terminal
             </div>
         );

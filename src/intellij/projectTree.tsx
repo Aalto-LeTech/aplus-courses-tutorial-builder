@@ -104,7 +104,9 @@ const ProjectTree: React.FC<ProjectTreeProps> = ({
 
     return (
         <>
-            <div id="intellij-project-toolbar">Project</div>
+            <div id="intellij-project-toolbar" className="toolwindow-toolbar">
+                Project
+            </div>
             <div id="intellij-project-tree">
                 {modules.map((module) => myfileToTreeNode(module))}
             </div>

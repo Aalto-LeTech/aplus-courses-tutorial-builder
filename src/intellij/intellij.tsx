@@ -124,87 +124,54 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         [selectedFilePath, setSelectedFilePath]
     );
 
-    const popup = React.useRef<HTMLDivElement>(null);
-    const intellij = React.useRef<HTMLDivElement>(null);
-    const projectTree = React.useRef<HTMLDivElement>(null);
-    const editor = React.useRef<HTMLDivElement>(null);
-    const repl = React.useRef<HTMLDivElement>(null);
+    const selectedComponent = selectedTask?.component[0];
 
-    React.useEffect(() => {
-        const popupEl = popup.current;
-        if (!isOverlay && popupEl) {
-            popupEl.style.display = 'none';
-            return;
+    const createPopup = React.useCallback(() => {
+        if (selectedTask === null || selectedComponent === undefined) {
+            return <></>;
         }
-        const intellijEl = intellij.current;
-        const projectTreeEl = projectTree.current;
-        const editorEl = editor.current;
-        const replEl = repl.current;
-        if (
-            !selectedTask ||
-            !selectedTutorial ||
-            !popupEl ||
-            !intellijEl ||
-            !projectTreeEl ||
-            !editorEl ||
-            !replEl
-        )
-            return;
-        let highlightedEl: HTMLDivElement | undefined = undefined;
         let onTop = false;
-        switch (selectedTask.component[0]) {
-            case 'build':
-                // TODO what is this
-                break;
-            case 'editor':
-                highlightedEl = editorEl;
-                break;
-            case 'projectTree':
-                highlightedEl = projectTreeEl;
-                break;
+        let inside = false;
+        switch (selectedComponent) {
             case 'repl':
-                highlightedEl = replEl;
                 onTop = true;
                 break;
+            case 'editor':
+                inside = true;
+                break;
         }
-        if (highlightedEl === undefined) {
-            return;
-        }
-        const width = highlightedEl.getBoundingClientRect().width;
-        const left = highlightedEl.getBoundingClientRect().left;
-        const top = highlightedEl.getBoundingClientRect().top;
-        const intellijLeft = intellijEl.getBoundingClientRect().left;
-        const intellijTop = intellijEl.getBoundingClientRect().top;
-        const popupHeight = popupEl.getBoundingClientRect().height;
-        popupEl.style.display = 'flex';
-        popupEl.style.transform = onTop
-            ? `translate(${left - intellijLeft}px, ${
-                  top - popupHeight - intellijTop - 20
-              }px)`
-            : `translate(${left + width - intellijLeft}px, ${
-                  top - intellijTop
-              }px)`;
-    }, [selectedTutorial, selectedTask, isOverlay]);
+        return (
+            <div
+                id="intellij-popup"
+                style={{
+                    bottom: onTop ? 'calc(100% + 10px)' : 'initial',
+                    left: inside ? 'initial' : onTop ? 0 : 'calc(100% + 10px)',
+                    right: inside ? '10px' : 'initial',
+                    top: inside ? '10px' : 'initial',
+                }}
+            >
+                <h2>{selectedTask?.instruction}</h2>
+                <p>{selectedTask?.info}</p>
+            </div>
+        );
+    }, [selectedTask, selectedComponent]);
 
     return (
         <div
-            ref={intellij}
             className="rounded-item"
             id="intellij"
             style={{
                 backgroundColor: isOverlay ? '#121314' : '#3c3f41',
-                gridTemplateRows: `30px 24px 3fr ${
-                    selectedBottomToolwindow === null ? 0 : '1fr'
+                gridTemplateRows: `30px 24px minmax(0, 3fr) ${
+                    selectedBottomToolwindow === null ? 0 : 'minmax(0, 1fr)'
                 } 24px 24px`,
                 gridTemplateColumns: `24px ${
-                    selectedLeftToolwindow === null ? 0 : '1fr'
-                } 4fr ${selectedRightToolwindow === null ? 0 : '1fr'} 24px`,
+                    selectedLeftToolwindow === null ? 0 : 'minmax(0, 1fr)'
+                } minmax(0, 4fr) ${
+                    selectedRightToolwindow === null ? 0 : 'minmax(0, 1fr)'
+                } 24px`,
             }}
         >
-            <div ref={popup} id="intellij-popup">
-                <h2>{selectedTask?.instruction}</h2>
-                <p>{selectedTask?.info}</p>
-            </div>
             {highlightedComponents.length > 0 && (
                 <button
                     id="intellij-hide-overlay"
@@ -244,21 +211,22 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 />
             </div>
             <div
-                ref={projectTree}
-                id="intellij-toolwindow-left"
+                id="intellij-toolwindow-left-container"
                 className={overlay('projectTree')}
             >
-                <ProjectTree
-                    setSelectedFile={setSelectedFile}
-                    setFiles={setFiles}
-                />
+                {selectedComponent === 'projectTree' && createPopup()}
+                <div id="intellij-toolwindow-left">
+                    <ProjectTree
+                        setSelectedFile={setSelectedFile}
+                        setFiles={setFiles}
+                    />
+                </div>
             </div>
-            <div
-                ref={editor}
-                id="intellij-editor"
-                className={overlay('editor')}
-            >
-                <Editor file={selectedFile} />
+            <div id="intellij-editor-container" className={overlay('editor')}>
+                {selectedComponent === 'editor' && createPopup()}
+                <div id="intellij-editor">
+                    <Editor file={selectedFile} />
+                </div>
             </div>
             {selectedRightToolwindow === informationTW && (
                 <div className={darkClass} id="intellij-toolwindow-right">
@@ -281,9 +249,10 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             <BottomToolwindowC
                 highlightedComponents={highlightedComponents}
                 selectedBottomToolwindow={selectedBottomToolwindow}
-                repl={repl}
                 isOverlay={isOverlay}
                 overlay={overlay}
+                createPopup={createPopup}
+                selectedComponent={selectedComponent}
             />
             <div
                 className={`intellij-whole-width ${darkClass}`}

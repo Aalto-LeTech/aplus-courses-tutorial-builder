@@ -49,6 +49,10 @@
     }
 }
 
+#new-task {
+    writing-mode: vertical-rl;
+}
+
 .sidebar-item {
     padding: 10px;
     cursor: pointer;

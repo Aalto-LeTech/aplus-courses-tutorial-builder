@@ -10,13 +10,13 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --border: #111;
-        --background: #1a1a1a;
-        --background-darker: #111;
+        --border: #111112;
+        --background: #1a1a1d;
+        --background-darker: #111112;
         --text: #fff;
-        --container-background: #111;
-        --button-background: #111;
-        --button-background-hover: #222;
+        --container-background: #111113;
+        --button-background: #111112;
+        --button-background-hover: #1e1e1f;
     }
 }
 
