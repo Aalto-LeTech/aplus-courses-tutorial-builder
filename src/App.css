@@ -47,7 +47,7 @@ div {
 }
 
 #container.welcome {
-    grid-template-columns: 1fr calc(100vh / 2400 * 480);
+    grid-template-columns: calc(100vh / 2400 * 480) 1fr;
 }
 
 .hidden {
