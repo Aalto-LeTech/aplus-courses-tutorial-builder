@@ -186,8 +186,8 @@
 #intellij-hide-overlay {
     z-index: 3;
     position: absolute;
-    right: 360px;
-    top: 256px;
+    right: 20px;
+    top: 182px;
 }
 
 #module-picker-label {
