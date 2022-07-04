@@ -55,6 +55,7 @@ const Editor: React.FC<EditorProps> = ({ file }) => {
                     dangerouslySetInnerHTML={{ __html: fileText }}
                     contentEditable
                     ref={ref}
+                    onKeyDown={() => hljs.highlightAll()}
                 ></code>
             </pre>
         </>

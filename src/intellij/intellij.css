@@ -7,9 +7,6 @@
     font-size: 14px;
     margin: 5px;
 
-    grid-template-rows: 30px 24px 3fr 1fr 24px 24px;
-    grid-template-columns: 24px 1fr 4fr 1fr 24px;
-
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -212,5 +209,5 @@
     border-radius: 15px;
     max-width: 200px;
     border: 1px solid #111;
-    white-space: pre;
+    white-space: pre-wrap;
 }

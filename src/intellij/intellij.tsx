@@ -4,6 +4,12 @@ import ProjectTree from './projectTree';
 import Editor from './editor';
 import { Task, Tutorial } from '../tutorial/types';
 import { useGranularEffect } from 'granular-hooks';
+import BottomToolwindowC from './bottomToolwindow';
+import {
+    BottomToolWindowButton,
+    LeftToolWindowButton,
+    RightToolWindowButton,
+} from './toolwindowButton';
 
 type IntelliJProps = {
     selectedTask: Task | null;
@@ -13,6 +19,22 @@ type IntelliJProps = {
     highlightedComponents: string[];
     autoSavedTime: Date | null;
 };
+export const versionControlTW = 'git';
+export const replTW = 'repl';
+export const terminalTW = 'terminal';
+export const projectTW = 'project';
+export const informationTW = 'information';
+
+export type BottomToolWindow =
+    | typeof versionControlTW
+    | typeof replTW
+    | typeof terminalTW;
+
+export type LeftToolWindow = typeof projectTW;
+
+export type RightToolWindow = typeof informationTW;
+
+export type ToolWindow = BottomToolWindow | LeftToolWindow | RightToolWindow;
 
 const IntelliJ: React.FC<IntelliJProps> = ({
     selectedTask,
@@ -25,8 +47,47 @@ const IntelliJ: React.FC<IntelliJProps> = ({
     const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
     const [files, setFiles] = React.useState<Map<string, File>>(new Map());
     const [hideOverlay, setHideOverlay] = React.useState(false);
+
+    const [selectedBottomToolwindow, setSelectedBottomToolwindow] =
+        React.useState<null | BottomToolWindow>(null);
+    const [selectedLeftToolwindow, setSelectedLeftToolwindow] =
+        React.useState<null | LeftToolWindow>(projectTW);
+    const [selectedRightToolwindow, setSelectedRightToolwindow] =
+        React.useState<null | RightToolWindow>(informationTW);
+
+    const setToolWindow = React.useCallback(
+        (
+            toolwindow: any,
+            setToolWindow: React.Dispatch<React.SetStateAction<any>>
+        ) => {
+            setToolWindow((old: ToolWindow) =>
+                old === toolwindow ? null : toolwindow
+            );
+        },
+        []
+    );
+
     const isOverlay = !hideOverlay && highlightedComponents.length > 0;
     const darkClass = isOverlay ? 'intellij-dark' : '';
+
+    const overlay = React.useCallback(
+        (component: string) => {
+            return isOverlay && !highlightedComponents.includes(component)
+                ? 'intellij-dark'
+                : '';
+        },
+        [highlightedComponents, isOverlay]
+    );
+
+    const toolwindowProps = {
+        setSelectedBottomToolwindow: setSelectedBottomToolwindow,
+        setSelectedLeftToolwindow: setSelectedLeftToolwindow,
+        setSelectedRightToolwindow: setSelectedRightToolwindow,
+        selectedBottomToolwindow: selectedBottomToolwindow,
+        selectedLeftToolwindow: selectedLeftToolwindow,
+        selectedRightToolwindow: selectedRightToolwindow,
+        setToolWindow: setToolWindow,
+    };
 
     useGranularEffect(
         () => {
@@ -130,7 +191,15 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             ref={intellij}
             className="rounded-item"
             id="intellij"
-            style={isOverlay ? { backgroundColor: '#121314' } : {}}
+            style={{
+                backgroundColor: isOverlay ? '#121314' : '#3c3f41',
+                gridTemplateRows: `30px 24px 3fr ${
+                    selectedBottomToolwindow === null ? 0 : '1fr'
+                } 24px 24px`,
+                gridTemplateColumns: `24px ${
+                    selectedLeftToolwindow === null ? 0 : '1fr'
+                } 4fr ${selectedRightToolwindow === null ? 0 : '1fr'} 24px`,
+            }}
         >
             <div ref={popup} id="intellij-popup">
                 <h2>{selectedTask?.instruction}</h2>
@@ -169,19 +238,15 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 <span>A+ Courses Tutorial Builder</span>
             </div>
             <div className={darkClass} id="intellij-left-edge">
-                <span className="intellij-selected">Project</span>
-                <span>Commit</span>
-                <div className="flex-grow"></div>
-                <span>Structure</span>
+                <LeftToolWindowButton
+                    toolwindow={projectTW}
+                    {...toolwindowProps}
+                />
             </div>
             <div
                 ref={projectTree}
                 id="intellij-toolwindow-left"
-                className={
-                    isOverlay && !highlightedComponents.includes('projectTree')
-                        ? 'intellij-dark'
-                        : ''
-                }
+                className={overlay('projectTree')}
             >
                 <ProjectTree
                     setSelectedFile={setSelectedFile}
@@ -191,48 +256,51 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             <div
                 ref={editor}
                 id="intellij-editor"
-                className={
-                    isOverlay && !highlightedComponents.includes('editor')
-                        ? 'intellij-dark'
-                        : ''
-                }
+                className={overlay('editor')}
             >
                 <Editor file={selectedFile} />
             </div>
-            <div className={darkClass} id="intellij-toolwindow-right">
-                <p>
-                    You can open files with the project tree. Click the button
-                    on the bottom of the tree to load modules.
-                </p>
-                <p>
-                    Import tutorials with the Import Tutorials button. The
-                    tutorial JSON has to have a "tutorials" field.
-                </p>
-            </div>
+            {selectedRightToolwindow === informationTW && (
+                <div className={darkClass} id="intellij-toolwindow-right">
+                    <p>
+                        You can open files with the project tree. Click the
+                        button on the bottom of the tree to load modules.
+                    </p>
+                    <p>
+                        Import tutorials with the Import Tutorials button. The
+                        tutorial JSON has to have a "tutorials" field.
+                    </p>
+                </div>
+            )}
             <div className={darkClass} id="intellij-right-edge">
-                <span className="intellij-selected">Information</span>
+                <RightToolWindowButton
+                    toolwindow={informationTW}
+                    {...toolwindowProps}
+                />
             </div>
-            <div
-                ref={repl}
-                className={
-                    isOverlay && !highlightedComponents.includes('repl')
-                        ? 'intellij-dark'
-                        : ''
-                }
-                id="intellij-toolwindow-bottom"
-            >
-                REPL
-            </div>
+            <BottomToolwindowC
+                highlightedComponents={highlightedComponents}
+                selectedBottomToolwindow={selectedBottomToolwindow}
+                repl={repl}
+                isOverlay={isOverlay}
+                overlay={overlay}
+            />
             <div
                 className={`intellij-whole-width ${darkClass}`}
                 id="intellij-toolbar-bottom"
             >
-                <span>Version Control</span>
-                <span className="intellij-selected">Run</span>
-                <span>TODO</span>
-                <span>Problems</span>
-                <span>Terminal</span>
-                <span>Build</span>
+                <BottomToolWindowButton
+                    toolwindow={versionControlTW}
+                    {...toolwindowProps}
+                />
+                <BottomToolWindowButton
+                    toolwindow={replTW}
+                    {...toolwindowProps}
+                />
+                <BottomToolWindowButton
+                    toolwindow={terminalTW}
+                    {...toolwindowProps}
+                />
             </div>
             <div
                 className={`intellij-whole-width ${darkClass}`}

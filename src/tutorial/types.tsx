@@ -1,6 +1,13 @@
 import { ActionArgumentFields, ArgumentInfo } from './actionArguments';
 
-export const Components = ['projectTree', 'editor', 'build', 'repl'];
+export const Components = [
+    'projectTree',
+    'editor',
+    'build',
+    'repl',
+    'git',
+    'terminal',
+];
 
 export class Action {
     readonly command: string;
