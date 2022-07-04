@@ -163,13 +163,17 @@
     padding-left: 10px;
     cursor: pointer;
 }
+.intellij-file:hover,
+.intellij-dir > summary:hover {
+    background-color: #2652c7;
+}
 
 .intellij-file {
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-summary {
+.intellij-dir > summary {
     padding: 4px 0;
 }
 

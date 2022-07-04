@@ -57,12 +57,23 @@ const ProjectTree: React.FC<ProjectTreeProps> = ({
                 parent = myFile;
             });
             parent.children.push({ name: file.name, file: file, children: [] });
-            parent.children.sort(
-                (a, b) => b.children.length - a.children.length
-            );
+
             setFiles((oldFiles) => oldFiles.set(file.webkitRelativePath, file));
         }
+        sortMyFile(root);
         setModules((oldModules) => [...oldModules, root]);
+    };
+
+    const sortMyFile = (file: MyFile) => {
+        file.children.sort((a, b) => {
+            if (
+                (a.children.length > 0 && b.children.length > 0) ||
+                (a.children.length === 0 && b.children.length === 0)
+            )
+                return a.name.localeCompare(b.name);
+            return a.children.length > 0 ? -1 : 1;
+        });
+        file.children.forEach((child) => sortMyFile(child));
     };
 
     const myfileToTreeNode = (file: MyFile): ReactNode => {
