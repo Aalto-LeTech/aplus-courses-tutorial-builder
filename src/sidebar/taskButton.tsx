@@ -8,6 +8,7 @@ type TaskButtonProps = {
     task: Task;
     setSelectedTask: (task: Task | null) => void;
     setSelectedControl: (control: Control) => void;
+    updateSelectedTutorial: (updatedTutorial: Tutorial) => void;
 };
 
 const TaskButton: React.FC<TaskButtonProps> = ({
@@ -15,7 +16,22 @@ const TaskButton: React.FC<TaskButtonProps> = ({
     task,
     setSelectedTask,
     setSelectedControl,
+    updateSelectedTutorial,
 }) => {
+    const index = selectedTutorial?.tasks.indexOf(task) ?? -1;
+    const changeTaskIndex = React.useCallback(
+        (up: boolean) => {
+            if (selectedTutorial === null) return;
+            const newIndex = up
+                ? Math.min(selectedTutorial.tasks.length - 1, index + 1)
+                : Math.max(0, index - 1);
+            const oldTask = selectedTutorial.tasks[newIndex];
+            selectedTutorial.tasks[newIndex] = task;
+            selectedTutorial.tasks[index] = oldTask;
+            updateSelectedTutorial(selectedTutorial);
+        },
+        [index, selectedTutorial, task, updateSelectedTutorial]
+    );
     return (
         <>
             {selectedTutorial && (
@@ -28,6 +44,19 @@ const TaskButton: React.FC<TaskButtonProps> = ({
                 >
                     <div className="task-index">
                         {selectedTutorial.tasks.indexOf(task) + 1}
+                        <div style={{ flexGrow: 1 }}></div>
+                        <button
+                            className="move-task"
+                            onClick={() => changeTaskIndex(false)}
+                        >
+                            {'<'}
+                        </button>
+                        <button
+                            className="move-task"
+                            onClick={() => changeTaskIndex(true)}
+                        >
+                            {'>'}
+                        </button>
                     </div>
                     <div
                         style={{ hyphens: 'auto', overflowWrap: 'break-word' }}

@@ -165,6 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 setSelectedTask={setSelectedTask}
                                 selectedTutorial={selectedTutorial}
                                 setSelectedControl={setSelectedControl}
+                                updateSelectedTutorial={updateSelectedTutorial}
                             />
                         ))}
                     </div>
