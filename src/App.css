@@ -42,7 +42,7 @@ div {
     right: 0;
     display: grid;
     grid-template-columns: 1fr 350px;
-    grid-template-rows: 250px 1fr;
+    grid-template-rows: 175px 1fr;
     background-color: var(--container-background);
 }
 
