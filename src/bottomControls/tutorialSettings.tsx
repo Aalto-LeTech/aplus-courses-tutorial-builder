@@ -79,6 +79,7 @@ const TutorialSettings: React.FC<TutorialSettingsProps> = ({
                         listItems={selectedTutorial.moduleDependencies}
                         onRemoveClick={handleRemoveDependency}
                         onSaveClick={handleDependencyChange}
+                        onAddClick={handleAddDependency}
                     />
                 </div>
             )}

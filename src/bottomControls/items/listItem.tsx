@@ -26,6 +26,7 @@ type ListItemPropsChildren = ListItemProps & {
 export type TextInputListItemProps = ListItemProps & {
     inputProps: TextInputProps<HTMLInputElement>;
     onSaveClick: (index: number, value: string) => void;
+    onAddClick: (value: string) => void;
 };
 
 export type SelectorListItemProps = ListItemProps & {
@@ -67,8 +68,10 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
     inputProps,
     onRemoveClick,
     onSaveClick,
+    onAddClick,
     listItems,
 }) => {
+    inputProps.setAutosave(false);
     return (
         <BottomItemBase title={title} info={info} inputProps={inputProps}>
             <div>
@@ -88,7 +91,7 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
                 <TextInput {...inputProps} />
                 <button
                     onClick={() => {
-                        inputProps.onSubmit();
+                        onAddClick(inputProps.value);
                         inputProps.setValue('');
                     }}
                 >
@@ -126,11 +129,7 @@ const EditableListItem: React.FC<EditableListItemProps> = ({
     );
 
     return (
-        <div
-            className={`list-item ${
-                inputProps.unsavedChanges ? 'unsaved' : ''
-            }`}
-        >
+        <div className="list-item">
             <TextAreaInput {...inputProps} />
             <div
                 style={{
@@ -139,16 +138,7 @@ const EditableListItem: React.FC<EditableListItemProps> = ({
                     alignItems: 'center',
                 }}
             >
-                <button
-                    onClick={() => {
-                        onSaveClick(index, inputProps.value);
-                        inputProps.setUnsavedChanges(false);
-                    }}
-                >
-                    Save
-                </button>
                 <button onClick={() => onRemoveClick(index)}>Remove</button>
-                {inputProps.unsavedChanges && <small>Unsaved changes</small>}
             </div>
         </div>
     );

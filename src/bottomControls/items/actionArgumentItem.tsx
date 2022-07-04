@@ -147,6 +147,7 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
                     onSaveClick={(index, value) =>
                         handleSaveListArgumentItem(argumentName, index, value)
                     }
+                    onAddClick={onSubmit}
                 />
             );
         case ArgumentType.Boolean:

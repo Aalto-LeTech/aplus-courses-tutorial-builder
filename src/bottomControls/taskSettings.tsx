@@ -139,7 +139,7 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     );
 
     const instructionInput = useTextInput(
-        'Instructions for the task',
+        'Instructions for the task that gets shown in the popup',
         (value) => handleSaveTextArgument('instruction', value, false)
     );
     const infoInput = useTextInput('Extra info for the task', (value) =>
@@ -258,7 +258,6 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                             ])
                         )
                     }
-                    hasSaveButton={false}
                 />
                 {Array.from(selectedTask.action.fields.entries()).map(
                     ([fieldName, fieldInfo]) => (

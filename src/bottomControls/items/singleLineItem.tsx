@@ -17,17 +17,7 @@ const SingleLineItem: React.FC<SingleLineItemProps> = ({
 }) => {
     return (
         <BottomItemBase title={title} info={info} inputProps={inputProps}>
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    inputProps.onSubmit();
-                    inputProps.setUnsavedChanges(false);
-                }}
-                className="list-item"
-            >
-                <TextInput {...inputProps} />
-                <button type="submit">Save</button>
-            </form>
+            <TextInput {...inputProps} />
             {children ?? <></>}
         </BottomItemBase>
     );

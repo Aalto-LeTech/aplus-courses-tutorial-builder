@@ -7,7 +7,6 @@ type SelectorItemProps = {
     inputProps: SelectInputProps;
     items: Map<string, string>;
     onSubmit: () => void;
-    hasSaveButton: boolean;
 };
 
 const SelectorItem: React.FC<SelectorItemProps> = ({
@@ -15,22 +14,14 @@ const SelectorItem: React.FC<SelectorItemProps> = ({
     inputProps,
     items,
     onSubmit,
-    hasSaveButton,
 }) => {
     return (
-        <form
-            className="bottom-item"
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit();
-            }}
-        >
+        <div>
             <label>
                 <h2>{title}</h2>
             </label>
             <Selector inputProps={inputProps} items={items} />
-            {hasSaveButton && <button type="submit">Save</button>}
-        </form>
+        </div>
     );
 };
 

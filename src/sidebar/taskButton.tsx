@@ -34,6 +34,11 @@ const TaskButton: React.FC<TaskButtonProps> = ({
                     >
                         <p>
                             <b>{task.instruction}</b>
+                            {task.instruction.trim() === '' && (
+                                <em style={{ opacity: 0.7 }}>
+                                    Task with no instruction
+                                </em>
+                            )}
                         </p>
                         <p>{task.info}</p>
                     </div>

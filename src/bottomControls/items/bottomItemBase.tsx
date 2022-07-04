@@ -22,27 +22,13 @@ const BottomItemBase: React.FC<BottomItemBaseProps> = ({
     inputProps,
     children,
 }) => {
-    const unsavedChangesText = React.useCallback(() => {
-        return (inputProps as TextInputProps<InputElement>)?.unsavedChanges ? (
-            <p style={{ userSelect: 'none' }}>Unsaved changes</p>
-        ) : (
-            <></>
-        );
-    }, [inputProps]);
     return (
-        <div
-            className={`bottom-item ${
-                (inputProps as TextInputProps<InputElement>)?.unsavedChanges
-                    ? 'unsaved'
-                    : ''
-            }`}
-        >
+        <div className="bottom-item">
             <label htmlFor={inputProps.uuid}>
                 <h2>{title}</h2>
                 <div>{info}</div>
             </label>
             {children}
-            {unsavedChangesText()}
         </div>
     );
 };

@@ -16,8 +16,8 @@ export type InputProps<T, E> = {
 export type TextInputProps<InputElement> = InputProps<string, InputElement> & {
     placeholder: string;
     onSubmit: () => void;
-    unsavedChanges: boolean;
-    setUnsavedChanges: (isUnsaved: boolean) => void;
+    autosave: boolean;
+    setAutosave: (autosave: boolean) => void;
 };
 
 export type BooleanInputProps = InputProps<boolean, HTMLInputElement>;
@@ -35,24 +35,24 @@ export const useTextInput = (
     onSubmitCallback: (value: string) => void
 ): TextInputProps<InputElement> => {
     const { value, setValue, uuid } = useInput('');
-    const [unsavedChanges, setUnsavedChanges] = React.useState(false);
+    const [autosave, setAutosave] = React.useState(true);
     const onChange: React.ChangeEventHandler<InputElement> = (e) => {
         setValue(e.target.value);
-        setUnsavedChanges(true);
+        if (autosave) onSubmitCallback(e.target.value);
     };
-    const onSubmit = () => {
-        onSubmitCallback(value);
-        setUnsavedChanges(false);
-    };
+    const onSubmit = React.useCallback(
+        () => onSubmitCallback(value),
+        [onSubmitCallback, value]
+    );
     return {
         value,
         setValue,
         onChange,
         onSubmit,
         placeholder,
-        unsavedChanges,
-        setUnsavedChanges,
         uuid,
+        autosave,
+        setAutosave,
     };
 };
 
@@ -99,7 +99,7 @@ export const TextInput: React.FC<TextInputProps<HTMLInputElement>> = (
             value={props.value}
             onChange={props.onChange}
             onKeyDown={(ev) => {
-                if (ev.code === 'Enter') {
+                if (!props.autosave && ev.code === 'Enter') {
                     props.onSubmit();
                 }
             }}
@@ -115,11 +115,6 @@ export const TextAreaInput: React.FC<TextInputProps<HTMLTextAreaElement>> = (
         <textarea
             value={props.value}
             onChange={props.onChange}
-            onKeyDown={(ev) => {
-                if (ev.code === 'Enter' && ev.ctrlKey) {
-                    props.onSubmit();
-                }
-            }}
             placeholder={props.placeholder}
         />
     );
