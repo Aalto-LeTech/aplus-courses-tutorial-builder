@@ -5,6 +5,7 @@ import './sidebar.css';
 
 type TaskButtonProps = {
     selectedTutorial: Tutorial | null;
+    selectedTask: Task | null;
     task: Task;
     setSelectedTask: (task: Task | null) => void;
     setSelectedControl: (control: Control) => void;
@@ -13,6 +14,7 @@ type TaskButtonProps = {
 
 const TaskButton: React.FC<TaskButtonProps> = ({
     selectedTutorial,
+    selectedTask,
     task,
     setSelectedTask,
     setSelectedControl,
@@ -42,7 +44,11 @@ const TaskButton: React.FC<TaskButtonProps> = ({
                         setSelectedControl(Control.TaskSettings);
                     }}
                 >
-                    <div className="task-index">
+                    <div
+                        className={`task-index ${
+                            selectedTask === task ? 'task-index-selected' : ''
+                        }`}
+                    >
                         {selectedTutorial.tasks.indexOf(task) + 1}
                         <div style={{ flexGrow: 1 }}></div>
                         <button

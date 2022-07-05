@@ -47,7 +47,27 @@ const BottomToolwindowC: React.FC<BottomToolwindowCProps> = ({
                         ` for ${selectedTask.actionArguments['module']}`}
                 </div>
                 <pre id="repl-textarea">
-                    <code>test</code>
+                    <code>
+                        {selectedTask && selectedTask.actionArguments['input'] && (
+                            <>
+                                {`scala> ${selectedTask.actionArguments['input']}`}
+                                <br />
+                            </>
+                        )}
+                        {selectedTask &&
+                            selectedTask.actionArguments['inputs'] &&
+                            selectedTask.actionArguments['inputs'].map(
+                                (input: any) => (
+                                    <>
+                                        {`scala> ${input}`}
+                                        <br />
+                                    </>
+                                )
+                            )}
+                        {selectedTask &&
+                            selectedTask.actionArguments['output'] &&
+                            selectedTask.actionArguments['output']}
+                    </code>
                 </pre>
             </div>
         );

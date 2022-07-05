@@ -12,6 +12,7 @@ type SidebarProps = {
     selectedTutorial: Tutorial | null;
     setSelectedTutorial: (tutorial: Tutorial | null) => void;
     updateSelectedTutorial: (updatedTutorial: Tutorial) => void;
+    selectedTask: Task | null;
     setSelectedTask: (task: Task | null) => void;
     setSelectedControl: (control: Control) => void;
 };
@@ -23,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     selectedTutorial,
     setSelectedTutorial,
     updateSelectedTutorial,
+    selectedTask,
     setSelectedTask,
     setSelectedControl,
 }) => {
@@ -162,6 +164,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <TaskButton
                                 key={selectedTutorial.tasks.indexOf(task) + 1}
                                 task={task}
+                                selectedTask={selectedTask}
                                 setSelectedTask={setSelectedTask}
                                 selectedTutorial={selectedTutorial}
                                 setSelectedControl={setSelectedControl}

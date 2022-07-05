@@ -154,6 +154,7 @@ function App() {
                 selectedTutorial={selectedTutorial}
                 setSelectedTutorial={setSelectedTutorial}
                 updateSelectedTutorial={updateSelectedTutorial}
+                selectedTask={selectedTask}
                 setSelectedTask={setSelectedTask}
                 setSelectedControl={setSelectedControl}
             />
