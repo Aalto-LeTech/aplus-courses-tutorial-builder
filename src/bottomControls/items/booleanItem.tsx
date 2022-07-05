@@ -13,7 +13,7 @@ const BooleanItem: React.FC<BooleanItemProps> = ({
     inputProps,
 }) => {
     return (
-        <div className="bottom-item">
+        <div key={inputProps.uuid} className="bottom-item">
             <label htmlFor={inputProps.uuid}>
                 <h2>{title}</h2>
                 <div>{info}</div>

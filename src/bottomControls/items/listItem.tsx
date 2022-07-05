@@ -71,7 +71,7 @@ export const TextInputListItem: React.FC<TextInputListItemProps> = ({
     onAddClick,
     listItems,
 }) => {
-    inputProps.setAutosave(false);
+    React.useEffect(() => inputProps.setAutosave(false), [inputProps]);
     return (
         <BottomItemBase title={title} info={info} inputProps={inputProps}>
             <div>
