@@ -24,15 +24,35 @@ export const replTW = 'repl';
 export const terminalTW = 'terminal';
 export const projectTW = 'project';
 export const informationTW = 'information';
+export const buildTW = 'build';
 
 export type BottomToolWindow =
     | typeof versionControlTW
     | typeof replTW
-    | typeof terminalTW;
+    | typeof terminalTW
+    | typeof buildTW;
+
+const BottomToolWindows = [versionControlTW, replTW, terminalTW, buildTW];
+
+const isBottomToolWindow = (tw: string): tw is BottomToolWindow => {
+    return tw !== undefined && BottomToolWindows.includes(tw);
+};
 
 export type LeftToolWindow = typeof projectTW;
 
+const LeftToolWindows = [projectTW];
+
+const isLeftToolWindow = (tw: string): tw is LeftToolWindow => {
+    return tw !== undefined && LeftToolWindows.includes(tw);
+};
+
 export type RightToolWindow = typeof informationTW;
+
+const RightToolWindows = [informationTW];
+
+const isRightToolWindow = (tw: string): tw is RightToolWindow => {
+    return tw !== undefined && RightToolWindows.includes(tw);
+};
 
 export type ToolWindow = BottomToolWindow | LeftToolWindow | RightToolWindow;
 
@@ -105,6 +125,7 @@ const IntelliJ: React.FC<IntelliJProps> = ({
             }
 
             alert(`File ${selectedFilePath} not found`);
+            setSelectedFilePath('');
         },
         [selectedFilePath],
         [selectedFile, files, setSelectedFile]
@@ -122,6 +143,37 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         },
         [selectedFile],
         [selectedFilePath, setSelectedFilePath]
+    );
+
+    useGranularEffect(
+        () => {
+            if (selectedTask === null) return;
+            for (const closed of selectedTask.assertClosed) {
+                if (isBottomToolWindow(closed)) {
+                    setSelectedBottomToolwindow(null);
+                } else if (isLeftToolWindow(closed)) {
+                    setSelectedLeftToolwindow(null);
+                } else if (isRightToolWindow(closed)) {
+                    setSelectedRightToolwindow(null);
+                }
+            }
+            for (const opened of selectedTask.component) {
+                if (isBottomToolWindow(opened)) {
+                    setSelectedBottomToolwindow(opened);
+                } else if (isLeftToolWindow(opened)) {
+                    setSelectedLeftToolwindow(opened);
+                } else if (isRightToolWindow(opened)) {
+                    setSelectedRightToolwindow(opened);
+                } else if (opened === 'editor') {
+                    const filePath = selectedTask.actionArguments['filePath'];
+                    if (typeof filePath === 'string') {
+                        setSelectedFilePath(filePath);
+                    }
+                }
+            }
+        },
+        [selectedTask],
+        []
     );
 
     const selectedComponent = selectedTask?.component[0];
@@ -269,6 +321,10 @@ const IntelliJ: React.FC<IntelliJProps> = ({
                 />
                 <BottomToolWindowButton
                     toolwindow={terminalTW}
+                    {...toolwindowProps}
+                />
+                <BottomToolWindowButton
+                    toolwindow={buildTW}
                     {...toolwindowProps}
                 />
             </div>

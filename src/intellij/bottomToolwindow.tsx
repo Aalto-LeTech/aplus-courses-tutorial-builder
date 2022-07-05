@@ -3,6 +3,7 @@ import { Task } from '../tutorial/types';
 import './bottomToolwindow.css';
 import {
     BottomToolWindow,
+    buildTW,
     replTW,
     terminalTW,
     versionControlTW,
@@ -58,6 +59,13 @@ const BottomToolwindowC: React.FC<BottomToolwindowCProps> = ({
             >
                 {selectedComponent === 'terminal' && createPopup()}
                 Terminal
+            </div>
+        );
+    } else if (selectedBottomToolwindow === buildTW) {
+        return (
+            <div className={overlay('build')} id="intellij-toolwindow-bottom">
+                {selectedComponent === 'build' && createPopup()}
+                Build
             </div>
         );
     } else {

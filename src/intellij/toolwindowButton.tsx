@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     BottomToolWindow,
+    buildTW,
     informationTW,
     LeftToolWindow,
     projectTW,
@@ -51,6 +52,7 @@ const BaseToolWindowButton: React.FC<BaseToolWindowButtonProps> = ({
         [versionControlTW, 'Version Control'],
         [replTW, 'Run'],
         [terminalTW, 'Terminal'],
+        [buildTW, 'Build'],
         [projectTW, 'Project'],
         [informationTW, 'Information'],
     ]);
