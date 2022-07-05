@@ -17,7 +17,11 @@ function App() {
     const [selectedControl, setSelectedControl] = React.useState<Control>(
         Control.Empty
     );
-    const [selectedFilePath, setSelectedFilePath] = React.useState<string>('');
+    const [selectedFilePath, setSelectedFilePath] = React.useState('');
+    const [checkFilePath, setCheckFilePath] = React.useState<{
+        path: string;
+        valid: boolean;
+    }>({ path: '', valid: false });
     const [highlightedComponents, setHighlightedComponents] = React.useState<
         string[]
     >([]);
@@ -59,6 +63,22 @@ function App() {
         }
         setHighlightedComponents(selectedTask.component);
     }, [selectedTutorial, selectedTask, setHighlightedComponents]);
+
+    React.useEffect(() => {
+        if (!selectedTask) {
+            return;
+        }
+        setCheckFilePath((old) => {
+            const path = selectedTask.actionArguments['filePath'] ?? '';
+            if (old.path === path) {
+                return old;
+            }
+            return {
+                path: path,
+                valid: false,
+            };
+        });
+    }, [selectedTask, setCheckFilePath]);
 
     React.useEffect(() => {
         if (selectedControl === Control.TutorialSettings) {
@@ -163,6 +183,8 @@ function App() {
                 selectedTutorial={selectedTutorial}
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
+                checkFilePath={checkFilePath}
+                setCheckFilePath={setCheckFilePath}
                 highlightedComponents={highlightedComponents}
                 autoSavedTime={autoSavedTime}
             />
@@ -174,6 +196,8 @@ function App() {
                 updateSelectedTask={updateSelectedTask}
                 selectedFilePath={selectedFilePath}
                 setSelectedFilePath={setSelectedFilePath}
+                checkFilePath={checkFilePath}
+                setCheckFilePath={setCheckFilePath}
                 removeSelectedTask={removeSelectedTask}
                 removeSelectedTutorial={removeSelectedTutorial}
             />

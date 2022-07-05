@@ -20,6 +20,16 @@ type BottomControlsProps = {
     selectedTask: Task | null;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
+    checkFilePath: {
+        path: string;
+        valid: boolean;
+    };
+    setCheckFilePath: React.Dispatch<
+        React.SetStateAction<{
+            path: string;
+            valid: boolean;
+        }>
+    >;
     removeSelectedTask: () => void;
     removeSelectedTutorial: () => void;
 };
@@ -32,6 +42,8 @@ const BottomControls: React.FC<BottomControlsProps> = ({
     selectedTask,
     selectedFilePath,
     setSelectedFilePath,
+    checkFilePath,
+    setCheckFilePath,
     removeSelectedTask,
     removeSelectedTutorial,
 }) => {
@@ -59,6 +71,8 @@ const BottomControls: React.FC<BottomControlsProps> = ({
                         setFullscreen={setFullscreen}
                         selectedFilePath={selectedFilePath}
                         setSelectedFilePath={setSelectedFilePath}
+                        checkFilePath={checkFilePath}
+                        setCheckFilePath={setCheckFilePath}
                         removeSelectedTask={removeSelectedTask}
                     />
                 ) : selectedControl === Control.TutorialSettings ? (

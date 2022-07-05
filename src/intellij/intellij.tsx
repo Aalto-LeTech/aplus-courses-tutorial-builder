@@ -16,6 +16,16 @@ type IntelliJProps = {
     selectedTutorial: Tutorial | null;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
+    checkFilePath: {
+        path: string;
+        valid: boolean;
+    };
+    setCheckFilePath: React.Dispatch<
+        React.SetStateAction<{
+            path: string;
+            valid: boolean;
+        }>
+    >;
     highlightedComponents: string[];
     autoSavedTime: Date | null;
 };
@@ -61,6 +71,8 @@ const IntelliJ: React.FC<IntelliJProps> = ({
     selectedTutorial,
     selectedFilePath,
     setSelectedFilePath,
+    checkFilePath,
+    setCheckFilePath,
     highlightedComponents,
     autoSavedTime,
 }) => {
@@ -108,6 +120,30 @@ const IntelliJ: React.FC<IntelliJProps> = ({
         selectedRightToolwindow: selectedRightToolwindow,
         setToolWindow: setToolWindow,
     };
+
+    useGranularEffect(
+        () => {
+            console.log('checking ' + checkFilePath.path);
+            for (const file of files) {
+                if (file[0] === checkFilePath.path) {
+                    const newCheckFilePath = { path: file[0], valid: true };
+                    setCheckFilePath(newCheckFilePath);
+                    console.log('found ' + file[0]);
+                    return;
+                }
+            }
+            if (checkFilePath.valid) {
+                const newCheckFilePath = {
+                    path: checkFilePath.path,
+                    valid: false,
+                };
+
+                setCheckFilePath(newCheckFilePath);
+            }
+        },
+        [checkFilePath.path],
+        [files, setCheckFilePath]
+    );
 
     useGranularEffect(
         () => {

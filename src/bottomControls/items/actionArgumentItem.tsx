@@ -25,6 +25,16 @@ type ActionArgumentItemProps = {
     ) => void;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
+    checkFilePath: {
+        path: string;
+        valid: boolean;
+    };
+    setCheckFilePath: React.Dispatch<
+        React.SetStateAction<{
+            path: string;
+            valid: boolean;
+        }>
+    >;
 };
 
 const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
@@ -38,6 +48,8 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
     handleChangeBooleanArgument,
     selectedFilePath,
     setSelectedFilePath,
+    checkFilePath,
+    setCheckFilePath,
 }) => {
     let args = selectedTask?.actionArguments[argumentName];
     if (args === undefined) {
@@ -57,10 +69,20 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
         argumentInfo.type === ArgumentType.StringArray
             ? 'New argument'
             : 'Argument';
-    const onSubmit =
-        argumentInfo.type === ArgumentType.StringArray
-            ? (value: string) => handleAddListArgument(argumentName, value)
-            : (value: string) => handleSaveTextArgument(argumentName, value);
+    let onSubmit: (value: string) => void;
+    if (argumentName === 'filePath') {
+        onSubmit = (value: string) => {
+            handleSaveTextArgument(argumentName, value);
+            setCheckFilePath({ path: value, valid: false });
+        };
+    } else if (argumentInfo.type === ArgumentType.StringArray) {
+        onSubmit = (value: string) =>
+            handleAddListArgument(argumentName, value);
+    } else {
+        onSubmit = (value: string) =>
+            handleSaveTextArgument(argumentName, value);
+    }
+
     const textInputProps = useTextInput(placeholder, onSubmit);
 
     useGranularEffect(
@@ -80,6 +102,9 @@ const ActionArgumentItem: React.FC<ActionArgumentItemProps> = ({
         if (argumentName === 'filePath') {
             return (
                 <div>
+                    <div>
+                        {checkFilePath.valid ? 'Found file' : 'File not found'}
+                    </div>
                     <button
                         onClick={() =>
                             setSelectedFilePath(textInputProps.value)

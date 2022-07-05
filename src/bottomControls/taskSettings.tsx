@@ -20,6 +20,16 @@ type TaskSettingsProps = {
     setFullscreen: (fullscreen: boolean) => void;
     selectedFilePath: string;
     setSelectedFilePath: (path: string) => void;
+    checkFilePath: {
+        path: string;
+        valid: boolean;
+    };
+    setCheckFilePath: React.Dispatch<
+        React.SetStateAction<{
+            path: string;
+            valid: boolean;
+        }>
+    >;
     removeSelectedTask: () => void;
 };
 
@@ -31,6 +41,8 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
     setFullscreen,
     selectedFilePath,
     setSelectedFilePath,
+    checkFilePath,
+    setCheckFilePath,
     removeSelectedTask,
 }) => {
     const index =
@@ -277,6 +289,8 @@ const TaskSettings: React.FC<TaskSettingsProps> = ({
                             }
                             selectedFilePath={selectedFilePath}
                             setSelectedFilePath={setSelectedFilePath}
+                            checkFilePath={checkFilePath}
+                            setCheckFilePath={setCheckFilePath}
                         />
                     )
                 )}
