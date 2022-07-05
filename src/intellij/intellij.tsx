@@ -123,12 +123,10 @@ const IntelliJ: React.FC<IntelliJProps> = ({
 
     useGranularEffect(
         () => {
-            console.log('checking ' + checkFilePath.path);
             for (const file of files) {
                 if (file[0] === checkFilePath.path) {
                     const newCheckFilePath = { path: file[0], valid: true };
                     setCheckFilePath(newCheckFilePath);
-                    console.log('found ' + file[0]);
                     return;
                 }
             }
